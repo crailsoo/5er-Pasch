@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 980" role="img" aria-label="Minecraft inspirierte warme Landschaft mit Dorf, Fluss und großen Bauten bei Sonnenuntergang">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8c98d"/>
+      <stop offset="42%" stop-color="#f0b06d"/>
+      <stop offset="72%" stop-color="#e69d59"/>
+      <stop offset="100%" stop-color="#be7443"/>
+    </linearGradient>
+    <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#90a76d"/>
+      <stop offset="100%" stop-color="#6d8752"/>
+    </linearGradient>
+    <linearGradient id="hillNear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#75945b"/>
+      <stop offset="100%" stop-color="#4f6f43"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8fd1de"/>
+      <stop offset="100%" stop-color="#559db1"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="980" fill="url(#sky)"/>
+  <circle cx="1210" cy="176" r="84" fill="#ffe8b8" opacity="0.95"/>
+  <circle cx="1210" cy="176" r="126" fill="#ffe8b8" opacity="0.2"/>
+
+  <g opacity="0.22">
+    <rect x="164" y="96" width="110" height="34" rx="6" fill="#fff2df"/>
+    <rect x="236" y="74" width="80" height="34" rx="6" fill="#fff2df"/>
+    <rect x="293" y="96" width="100" height="34" rx="6" fill="#fff2df"/>
+    <rect x="980" y="114" width="130" height="36" rx="6" fill="#fff2df"/>
+    <rect x="1062" y="88" width="98" height="36" rx="6" fill="#fff2df"/>
+    <rect x="1138" y="114" width="116" height="36" rx="6" fill="#fff2df"/>
+  </g>
+
+  <path d="M0 430h1600v550H0z" fill="#d99359" opacity="0.16"/>
+  <path d="M0 442L176 376h139l106-48h120l104 38 80-50h136l122 62h110l148 64 132-36 227 36v474H0z" fill="url(#hillFar)"/>
+  <path d="M0 540l138-44h94l76-42h104l86 48h106l72-30 90 36h98l84-58h112l88 44h88l94 66h170v420H0z" fill="url(#hillNear)"/>
+
+  <path d="M1022 560c-84 0-136 30-184 78-63 62-112 104-242 114-112 10-188 58-252 118h1256V676c-62 12-112 8-182-20-94-38-196-96-396-96z" fill="url(#water)" opacity="0.96"/>
+  <path d="M0 698c98-42 162-32 244-10 86 24 143 66 258 66 96 0 170-42 246-58 102-22 184 6 302 30 114 24 191 22 294-12V980H0z" fill="#6b8a54"/>
+
+  <g fill="#7c5d3d">
+    <rect x="194" y="556" width="76" height="76"/>
+    <rect x="252" y="520" width="56" height="112"/>
+    <rect x="234" y="498" width="92" height="30"/>
+
+    <rect x="338" y="586" width="82" height="64"/>
+    <rect x="320" y="562" width="116" height="30"/>
+
+    <rect x="468" y="552" width="94" height="84"/>
+    <rect x="448" y="526" width="128" height="30"/>
+
+    <rect x="614" y="572" width="72" height="70"/>
+    <rect x="598" y="546" width="108" height="28"/>
+  </g>
+  <g fill="#e5c18a">
+    <rect x="208" y="570" width="48" height="62"/>
+    <rect x="348" y="598" width="62" height="52"/>
+    <rect x="482" y="566" width="68" height="70"/>
+    <rect x="626" y="584" width="48" height="58"/>
+  </g>
+  <g fill="#654932">
+    <rect x="226" y="594" width="12" height="38"/>
+    <rect x="372" y="614" width="14" height="36"/>
+    <rect x="508" y="594" width="16" height="42"/>
+    <rect x="644" y="600" width="12" height="42"/>
+  </g>
+  <g fill="#d9f0a8">
+    <rect x="214" y="582" width="14" height="14"/>
+    <rect x="238" y="582" width="14" height="14"/>
+    <rect x="360" y="608" width="14" height="14"/>
+    <rect x="386" y="608" width="14" height="14"/>
+    <rect x="494" y="580" width="14" height="14"/>
+    <rect x="522" y="580" width="14" height="14"/>
+    <rect x="634" y="594" width="14" height="14"/>
+  </g>
+
+  <g>
+    <rect x="1036" y="394" width="170" height="262" fill="#8a8d83"/>
+    <rect x="1002" y="364" width="238" height="40" fill="#a0a69a"/>
+    <rect x="1066" y="282" width="52" height="112" fill="#9b9e93"/>
+    <rect x="1126" y="250" width="46" height="144" fill="#878b81"/>
+    <rect x="1180" y="306" width="44" height="88" fill="#9b9e93"/>
+    <rect x="1026" y="438" width="22" height="22" fill="#d9f0a8"/>
+    <rect x="1062" y="438" width="22" height="22" fill="#d9f0a8"/>
+    <rect x="1098" y="438" width="22" height="22" fill="#d9f0a8"/>
+    <rect x="1134" y="438" width="22" height="22" fill="#d9f0a8"/>
+    <rect x="1170" y="438" width="22" height="22" fill="#d9f0a8"/>
+    <rect x="1082" y="504" width="64" height="152" fill="#5c4432"/>
+    <rect x="1056" y="654" width="118" height="22" fill="#76563f"/>
+  </g>
+
+  <g>
+    <rect x="818" y="540" width="20" height="112" fill="#63452d"/>
+    <rect x="792" y="498" width="72" height="64" fill="#4f7b44"/>
+    <rect x="764" y="526" width="128" height="48" fill="#5d8a50"/>
+    <rect x="806" y="466" width="44" height="44" fill="#6d9b5d"/>
+  </g>
+  <g>
+    <rect x="896" y="566" width="18" height="96" fill="#63452d"/>
+    <rect x="874" y="532" width="62" height="52" fill="#4f7b44"/>
+    <rect x="852" y="554" width="108" height="40" fill="#5d8a50"/>
+    <rect x="888" y="502" width="36" height="36" fill="#6d9b5d"/>
+  </g>
+  <g>
+    <rect x="1282" y="540" width="18" height="104" fill="#63452d"/>
+    <rect x="1258" y="502" width="68" height="58" fill="#4f7b44"/>
+    <rect x="1232" y="528" width="122" height="44" fill="#5d8a50"/>
+    <rect x="1274" y="472" width="42" height="40" fill="#6d9b5d"/>
+  </g>
+
+  <g opacity="0.3">
+    <rect x="0" y="0" width="1600" height="980" fill="url(#sky)"/>
+  </g>
+</svg>
