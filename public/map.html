@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101110">
+  <meta name="description" content="Die echte 3D-Weltkarte des Minecraft-Servers 5er Pasch.">
+  <title>Weltkarte · 5er Pasch</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script src="extras.js" defer></script>
+</head>
+<body class="inner-page">
+<header class="header inner-header" id="top">
+  <div class="shell nav">
+    <a class="wordmark" href="index.html" aria-label="5er Pasch – Startseite">5er Pasch<span class="wordmark-point">.</span></a>
+    <div class="menu-wrap">
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-controls="site-menu" aria-expanded="false" aria-label="Navigationsmenü öffnen">
+        <span>Menü</span><span class="menu-glyph" aria-hidden="true"><i></i><i></i></span>
+      </button>
+      <nav class="menu-panel" id="site-menu" aria-label="Hauptnavigation" hidden>
+        <a href="index.html">Startseite <span aria-hidden="true">01</span></a>
+        <a href="index.html#spieler">Spieler <span aria-hidden="true">02</span></a>
+        <a href="index.html#projekte">Projekte <span aria-hidden="true">03</span></a>
+        <a href="map.html">Weltkarte <span aria-hidden="true">04</span></a>
+        <a href="stats.html">Stats <span aria-hidden="true">05</span></a>
+        <a data-discord href="#" aria-disabled="true">Discord <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="page-main">
+  <section class="shell page-heading">
+    <p class="overline">Unsere Welt · live in 3D</p>
+    <h1>Weltkarte<span class="title-dot">.</span></h1>
+    <p class="page-summary">Entdecke, was auf unserem Server entsteht.</p>
+  </section>
+
+  <section class="shell map-layout">
+    <div id="map-connected" class="map-connected" hidden>
+      <div class="map-toolbar">
+        <span>5er Pasch / Overworld</span>
+        <a id="map-external" href="#" target="_blank" rel="noopener noreferrer">Groß öffnen <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="map-viewport">
+        <iframe id="bluemap-frame" title="Interaktive 3D-Minecraft-Weltkarte von 5er Pasch" allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>
+      </div>
+      <p class="page-footnote">Die Karte wird direkt von unserem Minecraft-Server bereitgestellt.</p>
+    </div>
+
+    <div id="map-setup" class="map-setup">
+      <div class="map-empty-art" aria-hidden="true">
+        <span class="map-contour c1"></span><span class="map-contour c2"></span><span class="map-contour c3"></span>
+        <span class="map-marker">✧</span>
+      </div>
+      <div class="map-empty-copy">
+        <p class="overline">Weltkarte vorbereiten</p>
+        <h2>Hier entsteht die Karte unserer echten Welt.</h2>
+        <p>Damit du Bauwerke und Landschaften wirklich in 3D erkunden kannst, muss BlueMap auf unserem Minecraft-Server eingerichtet werden.</p>
+        <a class="text-link" href="https://github.com/BlueMap-Minecraft/BlueMapWiki/blob/master/wiki/getting-started/Installation.md" target="_blank" rel="noopener noreferrer">BlueMap-Dokumentation <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div id="map-http" class="map-http" hidden>
+      <p>Die Karte ist erreichbar, wird aber derzeit über HTTP bereitgestellt. Auf dieser HTTPS-Website kann sie deshalb nicht direkt eingebettet werden.</p>
+      <a id="map-http-link" href="#" target="_blank" rel="noopener noreferrer">Karte in neuem Tab öffnen ↗</a>
+    </div>
+  </section>
+</main>
+<footer class="footer inner-footer"><div class="shell footer-inner">
+  <span>5er Pasch © <span id="year">2026</span></span>
+  <a href="index.html">Zur Startseite <span aria-hidden="true">↗</span></a>
+</div></footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body></html>

@@ -38,3 +38,47 @@ Die Serverstatus-Abfrage verwendet `mcstatus.io`, Spieler-Avatare optional `mc-h
 **Sicherheit:** Keine Zugangsdaten, privaten Schlüssel oder RCON-Passwörter in `config.js` speichern; alle Dateien im `public`-Ordner sind öffentlich.
 
 Weitere Infos: https://developers.cloudflare.com/pages/get-started/git-integration/
+
+## Weltkarte einrichten (BlueMap)
+
+Die Website enthält unter /map.html eine eigene Kartenansicht. **Sie zeigt erst dann
+eine echte 3D-Karte eurer Welt, wenn BlueMap auf dem Gameserver läuft.**
+Die Minecraft-IP 45.143.198.58:25605 alleine gibt keine Weltdaten an die Website.
+
+1. Installiere eine zur Minecraft-Version passende [BlueMap-Version](https://github.com/BlueMap-Minecraft/BlueMap/releases).
+   Paper/Spigot: Datei in plugins/, Fabric/Forge: Datei in mods/.
+2. Server einmal starten und im BlueMap-Konfigurationsordner in core.conf
+   die Option accept-download: true bestätigen, dann neu starten.
+3. Im Gameserver-Panel einen **zusätzlichen freien Port** freischalten lassen.
+   In plugins/BlueMap/webserver.conf (oder dem entsprechenden Mod-Konfigurationspfad)
+   enabled: true sicherstellen und port: auf den tatsächlich freigeschalteten
+   Zusatzport setzen. Nicht den Minecraft-Port 25605 dafür verwenden.
+4. Die BlueMap-Renderung abwarten und die Karte zunächst direkt unter
+   http://SERVER-IP:ZUSATZPORT/ testen. Falls die Karte öffentlich sein soll,
+   ggf. Zugang/Schutz/Koordinatenfreigabe bedenken.
+5. Für **Einbettung** auf der Cloudflare-HTTPS-Website eine über HTTPS erreichbare
+   BlueMap-URL konfigurieren, z. B. über einen geeigneten Reverse Proxy bzw.
+   eine vom Hoster bereitgestellte HTTPS-Kartenadresse. Den tatsächlichen Link
+   in public/config.js als bluemapUrl eintragen.
+   HTTP-Karten können aus Sicherheitsgründen nicht in die HTTPS-Seite eingebettet
+   werden; die Website bietet dann lediglich einen Link zum separaten Öffnen an.
+
+Offizielle Anleitung:
+https://github.com/BlueMap-Minecraft/BlueMapWiki/blob/master/wiki/getting-started/Installation.md
+
+## Stats-Seite
+
+/stats.html ist nur über das Dropdown-Menü der Website verlinkt (nicht direkt
+als Link auf der Startseite). Die Statistiken kommen aus der öffentlichen
+Minecraft-Status-API und werden etwa alle 60 Sekunden aktualisiert:
+
+- Aktuell online, freie Slots und maximale Plätze
+- Minecraft-Version, bei Freigabe die Server-Software und MOTD
+- Vom Server freigegebene Spielernamen (oft nur eine Stichprobe)
+- Spielerzahl-Verlauf **nur seit Öffnen der Stats-Seite**; keine dauerhafte Speicherung
+
+Langfristige Statistiken wie Spielzeit, Tode, zurückgelegte Distanz oder abgebaute
+Blöcke sind über die Status-Abfrage nicht verfügbar. Dafür wäre ein separates
+Server-Plugin mit Statistik-API nötig.
+
+API-Dokumentation: https://mcstatus.io/docs

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101110">
+  <meta name="description" content="Live-Statistiken von 5er Pasch – Spieler, Version und Serverstatus.">
+  <title>Stats · 5er Pasch</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script src="extras.js" defer></script>
+</head>
+<body class="inner-page">
+<header class="header inner-header" id="top">
+  <div class="shell nav">
+    <a class="wordmark" href="index.html" aria-label="5er Pasch – Startseite">5er Pasch<span class="wordmark-point">.</span></a>
+    <div class="menu-wrap">
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-controls="site-menu" aria-expanded="false" aria-label="Navigationsmenü öffnen">
+        <span>Menü</span><span class="menu-glyph" aria-hidden="true"><i></i><i></i></span>
+      </button>
+      <nav class="menu-panel" id="site-menu" aria-label="Hauptnavigation" hidden>
+        <a href="index.html">Startseite <span aria-hidden="true">01</span></a>
+        <a href="index.html#spieler">Spieler <span aria-hidden="true">02</span></a>
+        <a href="index.html#projekte">Projekte <span aria-hidden="true">03</span></a>
+        <a href="map.html">Weltkarte <span aria-hidden="true">04</span></a>
+        <a href="stats.html">Stats <span aria-hidden="true">05</span></a>
+        <a data-discord href="#" aria-disabled="true">Discord <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="page-main">
+  <section class="shell page-heading stats-title">
+    <p class="overline">Direkt vom Minecraft-Server</p>
+    <h1>Stats<span class="title-dot">.</span></h1>
+    <div class="stats-statusline">
+      <span class="status-dot" id="stats-dot" aria-hidden="true"></span>
+      <span id="stats-status" aria-live="polite">Verbindung wird geprüft</span>
+      <span class="meta-separator" aria-hidden="true">/</span>
+      <span id="stats-updated">Noch keine Daten</span>
+      <button id="refresh-stats" type="button" class="stats-refresh" aria-label="Statistiken neu laden">Aktualisieren <span aria-hidden="true">↻</span></button>
+    </div>
+  </section>
+  <section class="shell stats-body">
+    <div class="stats-big-grid" aria-label="Live-Kennzahlen">
+      <article class="stats-number">
+        <p>Spieler online</p>
+        <strong id="stat-online">–</strong>
+        <span id="stat-online-detail">Aktuell verbunden</span>
+      </article>
+      <article class="stats-number">
+        <p>Freie Plätze</p>
+        <strong id="stat-free">–</strong>
+        <span id="stat-free-detail">Von insgesamt – Plätzen</span>
+      </article>
+      <article class="stats-number">
+        <p>Server-Version</p>
+        <strong class="stat-text-value" id="stat-version">–</strong>
+        <span>Minecraft Java</span>
+      </article>
+    </div>
+
+    <div class="stats-lower">
+      <div class="stats-chart-section">
+        <div class="stats-section-top">
+          <h2>Spieleraktivität</h2>
+          <span>Seit Öffnen dieser Seite</span>
+        </div>
+        <div class="chart-area" aria-label="Verlauf der Online-Spielerzahl">
+          <svg id="player-chart" viewBox="0 0 640 190" preserveAspectRatio="none" role="img" aria-label="Spielerzahl im Zeitverlauf">
+            <path id="chart-area" d="" fill="rgba(245,240,232,.075)"></path>
+            <polyline id="chart-line" points="" fill="none" stroke="#f5f0e8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+          </svg>
+          <p id="chart-message">Der Verlauf baut sich automatisch auf, während du hier bist.</p>
+        </div>
+      </div>
+      <aside class="stats-detail-section">
+        <h2>Serverinfos</h2>
+        <dl class="stats-facts">
+          <div><dt>Serveradresse</dt><dd id="stat-address">–</dd></div>
+          <div><dt>Version / Software</dt><dd id="stat-software">–</dd></div>
+          <div><dt>Server-MOTD</dt><dd id="stat-motd">–</dd></div>
+        </dl>
+        <div class="stats-players-block">
+          <h3>Jetzt auf dem Server</h3>
+          <div id="stats-player-names" aria-live="polite"><p>Spielerdaten werden geladen …</p></div>
+        </div>
+      </aside>
+    </div>
+    <p class="stats-note">Alle Live-Werte stammen aus der öffentlichen Minecraft-Statusabfrage und werden ungefähr jede Minute aktualisiert. Langzeitwerte wie Spielstunden, Tode oder abgebaute Blöcke benötigen ein zusätzliches Statistik-Plugin.</p>
+  </section>
+</main>
+<footer class="footer inner-footer"><div class="shell footer-inner">
+  <span>5er Pasch © <span id="year">2026</span></span>
+  <a href="index.html">Zur Startseite <span aria-hidden="true">↗</span></a>
+</div></footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body></html>
