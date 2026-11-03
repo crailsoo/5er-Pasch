@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="config.js" defer></script>
   <script src="extras.js" defer></script>
+  <script src="map-embed.js" defer></script>
 </head>
 <body class="inner-page">
 <header class="header inner-header" id="top">
@@ -33,50 +34,15 @@
   </div>
 </header>
 <main class="page-main">
-  <section class="shell page-heading">
-    <p class="overline">Unsere Welt · live in 3D</p>
-    <h1>Weltkarte<span class="title-dot">.</span></h1>
-    <p class="page-summary">Entdecke, was auf unserem Server entsteht.</p>
-  </section>
-
-  <section class="shell map-layout">
-    <div id="map-connected" class="map-connected" hidden>
-      <div class="map-toolbar">
-        <span>5er Pasch / Overworld</span>
-        <a id="map-external" href="#" target="_blank" rel="noopener noreferrer">Groß öffnen <span aria-hidden="true">↗</span></a>
-      </div>
-      <div class="map-viewport">
-        <iframe id="bluemap-frame" title="Interaktive 3D-Minecraft-Weltkarte von 5er Pasch" allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>
-      </div>
-      <p class="page-footnote">Die interaktive Karte zeigt die gerenderten Bereiche unserer echten Survival-Welt.</p>
-    </div>
-
-    <div id="map-setup" class="map-setup">
-      <div class="map-empty-art" aria-hidden="true">
-        <span class="map-contour c1"></span><span class="map-contour c2"></span><span class="map-contour c3"></span>
-        <span class="map-marker">✧</span>
-      </div>
-      <div class="map-empty-copy">
-        <p class="overline">Unsere Welt</p>
-        <h2>Die Karte wird gerade aufgebaut.</h2>
-        <p>BlueMap ist auf unserem Server installiert. Sobald die Verbindung zur Website eingerichtet ist, kannst du unsere Welt direkt hier erkunden.</p>
-      </div>
-    </div>
-    <div id="map-http" class="map-http map-live" hidden>
-      <div class="map-live-art" aria-hidden="true">
-        <span class="map-live-ring"></span>
-        <span class="map-live-mark">✧</span>
-        <span class="map-live-coord">X −217 &nbsp;·&nbsp; Z −4894</span>
-      </div>
-      <div class="map-live-copy">
-        <p class="overline">BlueMap · 5er Pasch</p>
-        <h2>Unsere Welt ist auf der Karte.</h2>
-        <p>Entdecke die bereits gerenderten Landschaften und Bauwerke in der interaktiven 3D-Karte.</p>
-        <a id="map-http-link" class="map-live-button" href="#" target="_blank" rel="noopener noreferrer">Weltkarte öffnen <span aria-hidden="true">↗</span></a>
-        <span class="map-live-hint">Öffnet BlueMap in einem neuen Tab. Für eine Einbettung hier brauchen wir noch HTTPS.</span>
-      </div>
-    </div>
-  </section>
+  <section class="shell page-heading map-standalone-heading"><p class="overline">Unsere Welt</p><h1>Weltkarte<span class="title-dot">.</span></h1></section>
+  <section class="shell map-standalone-viewport"><div class="bluemap-widget" data-bluemap>
+  <iframe title="Interaktive Minecraft 3D-Weltkarte von 5er Pasch" class="bluemap-iframe" loading="eager" allowfullscreen></iframe>
+  <div class="bluemap-overlay" data-map-overlay aria-live="polite">
+    <span data-map-message>Weltkarte wird verbunden …</span>
+    <a data-map-direct href="#" target="_blank" rel="noopener noreferrer">Weltkarte separat öffnen ↗</a>
+    <button type="button" data-map-retry hidden>Erneut versuchen</button>
+  </div>
+</div></section>
 </main>
 <footer class="footer inner-footer"><div class="shell footer-inner">
   <span>5er Pasch © <span id="year">2026</span></span>

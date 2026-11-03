@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="config.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="map-embed.js" defer></script>
 </head>
 <body>
   <header class="header" id="top">
@@ -26,7 +27,7 @@
           <a href="#top">Startseite <span aria-hidden="true">01</span></a>
           <a href="#spieler">Spieler <span aria-hidden="true">02</span></a>
           <a href="#projekte">Projekte <span aria-hidden="true">03</span></a>
-          <a href="map.html">Weltkarte <span aria-hidden="true">04</span></a>
+          <a href="#weltkarte">Weltkarte <span aria-hidden="true">04</span></a>
           <a href="stats.html">Stats <span aria-hidden="true">05</span></a>
           <a data-discord href="#" aria-disabled="true">Discord <span aria-hidden="true">↗</span></a>
         </nav>
@@ -53,7 +54,7 @@
           <a class="btn btn-outline" data-discord href="#" aria-disabled="true">Unser Discord <span class="btn-symbol" aria-hidden="true">↗</span></a>
         </div>
       </div>
-      <a href="#spieler" class="scroll-cue">Mehr entdecken <span aria-hidden="true">↓</span></a>
+      <a href="#weltkarte" class="scroll-cue">Mehr entdecken <span aria-hidden="true">↓</span></a>
       <p class="photo-credit"><a href="https://modrinth.com/shader/complementary-reimagined" target="_blank" rel="noopener noreferrer">Bild: Complementary Reimagined / Modrinth</a></p>
     </section>
 
@@ -87,6 +88,21 @@
           </div>
         </div>
       </div>
+    </section>
+
+
+    <section class="map-home" id="weltkarte" aria-labelledby="home-map-heading">
+      <div class="shell map-heading"><p class="overline">Unsere Minecraft-Welt</p>
+        <div class="map-heading-row"><h2 id="home-map-heading">Weltkarte.</h2><a href="map.html">Groß ansehen ↗</a></div>
+      </div>
+      <div class="shell map-home-viewport"><div class="bluemap-widget" data-bluemap>
+  <iframe title="Interaktive Minecraft 3D-Weltkarte von 5er Pasch" class="bluemap-iframe" loading="lazy" allowfullscreen></iframe>
+  <div class="bluemap-overlay" data-map-overlay aria-live="polite">
+    <span data-map-message>Weltkarte wird verbunden …</span>
+    <a data-map-direct href="#" target="_blank" rel="noopener noreferrer">Weltkarte separat öffnen ↗</a>
+    <button type="button" data-map-retry hidden>Erneut versuchen</button>
+  </div>
+</div></div>
     </section>
 
     <section class="projects section-pad" id="projekte">

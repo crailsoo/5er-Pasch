@@ -45,68 +45,6 @@
   const year = $("#year");
   if (year) year.textContent = new Date().getFullYear();
 
-  // BlueMap wird unter /bluemap/ über eine Pages Function per HTTPS eingebettet.
-  // Wenn der Server/Proxy nicht erreichbar ist, bleibt der direkte BlueMap-Link verfügbar.
-  const mapSetup = $("#map-setup");
-  if (mapSetup) {
-    const rawMapUrl = get(cfg.bluemapUrl);
-    if (rawMapUrl) {
-      try {
-        const url = new URL(rawMapUrl, window.location.href);
-        const originalLink = $("#map-http-link");
-        originalLink.href = url.href;
-        const fallback = (message) => {
-          $("#map-connected").hidden = true;
-          $("#map-http").hidden = false;
-          mapSetup.hidden = true;
-          if (message) {
-            const hint = $(".map-live-hint");
-            if (hint) hint.textContent = message;
-          }
-        };
-
-        if (url.protocol === "https:") {
-          $("#bluemap-frame").src = url.href;
-          $("#map-external").href = url.href;
-          $("#map-connected").hidden = false;
-          mapSetup.hidden = true;
-        } else if (url.protocol === "http:") {
-          // Proxy zuerst prüfen: BlueMap /settings.json enthält die Kartenkonfiguration.
-          const embedUrl = "/bluemap/index.html" + url.hash;
-          const mainFrame = $("#bluemap-frame");
-          mapSetup.querySelector("h2").textContent = "Weltkarte wird geladen …";
-          mapSetup.querySelector(".map-empty-copy > p:not(.overline)").textContent =
-            "Wir verbinden unsere echte Minecraft-Welt mit der Website.";
-
-          (async () => {
-            try {
-              const check = await fetch("/bluemap/settings.json", { cache: "no-store" });
-              if (!check.ok) throw new Error("BlueMap proxy nicht erreichbar");
-              const contentType = check.headers.get("content-type") || "";
-              if (!contentType.toLowerCase().includes("json")) {
-                throw new Error("BlueMap hat keine JSON-Konfiguration geliefert");
-              }
-              const settings = await check.json();
-              if (!settings || typeof settings !== "object" || !Array.isArray(settings.maps)) {
-                throw new Error("Unerwartete BlueMap-Konfiguration");
-              }
-              mainFrame.src = embedUrl;
-              $("#map-external").href = embedUrl;
-              $("#map-connected").hidden = false;
-              mapSetup.hidden = true;
-            } catch (error) {
-              fallback("Die HTTPS-Verbindung zu BlueMap ist gerade nicht verfügbar. Du kannst die Karte trotzdem separat öffnen.");
-            }
-          })();
-        } else {
-          fallback("Die Karte kann momentan nicht eingebettet werden.");
-        }
-      } catch (error) {
-        // Ungültige URL: Einrichtungshinweis bleibt sichtbar.
-      }
-    }
-  }
-
   // Stats nur aus tatsächlich übertragenen Minecraft-Serverwerten.
   if (!$("#stats-status")) return;
   const server = get(cfg.serverAddress);
