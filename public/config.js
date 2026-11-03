@@ -5,6 +5,11 @@
   Alle untenstehenden Projekte, Meilensteine und Updates sind DEMODATEN.
 */
 window.SITE_CONFIG = {
+  serverName: "5er Pasch",
+  description: "Eine kleine Minecraft-Welt mit großen Ideen. Hier sammeln wir unsere Bauprojekte, Weltfortschritte und alles, was unseren Server nach und nach besonders macht.",
+  welcomeText: "5er Pasch ist unser gemeinsamer Minecraft-Server. Hier siehst du, woran wir gerade bauen, welche Meilensteine wir erreicht haben und wie sich unsere Welt entwickelt.",
+  discordUrl: "", // Hier euren echten Discord-Einladungslink eintragen
+  discordLabel: "Discord öffnen",
   serverAddress: "", // z. B. "play.deinserver.de:25565" (öffentlich erreichbare Java-Adresse)
   bedrockAddress: "", // optional, falls ihr eine separate Bedrock-Adresse anzeigen wollt
   edition: "java", // "java" oder "bedrock" für die Statusabfrage
