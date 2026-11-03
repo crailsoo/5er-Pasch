@@ -8,9 +8,9 @@ window.SITE_CONFIG = {
   serverName: "5er Pasch",
   description: "Eine kleine Minecraft-Welt mit großen Ideen. Hier sammeln wir unsere Bauprojekte, Weltfortschritte und alles, was unseren Server nach und nach besonders macht.",
   welcomeText: "5er Pasch ist unser gemeinsamer Minecraft-Server. Hier siehst du, woran wir gerade bauen, welche Meilensteine wir erreicht haben und wie sich unsere Welt entwickelt.",
-  discordUrl: "", // Hier euren echten Discord-Einladungslink eintragen
+  discordUrl: "https://discord.gg/drFRpdAc7q",
   discordLabel: "Discord öffnen",
-  serverAddress: "", // z. B. "play.deinserver.de:25565" (öffentlich erreichbare Java-Adresse)
+  serverAddress: "45.143.198.58:25605", // Öffentliche Minecraft-Java-Adresse
   bedrockAddress: "", // optional, falls ihr eine separate Bedrock-Adresse anzeigen wollt
   edition: "java", // "java" oder "bedrock" für die Statusabfrage
   bluemapUrl: "", // z. B. "https://map.deinedomain.de" – HTTPS für Einbettung erforderlich
@@ -19,6 +19,9 @@ window.SITE_CONFIG = {
   // "username" ist der echte Java-Minecraft-Name für das Skin-Bild.
   // Die Live-Liste unter "Gerade online" wird separat aus dem Serverstatus geladen.
   players: [
+    { name: "sams939", username: "sams939", role: "Server Owner" },
+    { name: "SALTYPIMP", username: "SALTYPIMP", role: "Spieler" },
+    { name: "Ben_Keynoobie", username: "Ben_Keynoobie", role: "Spieler" }
   ],
   projects: [
     { title: "Die Bergfestung", category: "MEGABASE", status: "bau", progress: 72, builders: ["Spieler 01", "Spieler 02"], description: "Eine Festung direkt im Gebirge, mit mächtigen Mauern, geheimen Gängen und einer Aussicht über das ganze Tal.", image: "", theme: "mountain", demo: true },
