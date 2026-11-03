@@ -1,231 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b0f12" />
-  <meta name="description" content="5er Pasch – Eine dunkle Minecraft-SMP Website mit Welcome Page, Baufortschritt, Weltfortschritt und Serverinfos." />
-  <title>5er Pasch — Minecraft SMP</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101110">
+  <meta name="description" content="5er Pasch – unser Minecraft Survival Server. Eine Welt, fünf Freunde und viele Ideen.">
+  <title>5er Pasch · Minecraft SMP</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 <body>
-  <header class="site-header" id="top">
-    <div class="container nav-shell">
-      <a class="brand" href="#top" aria-label="5er Pasch Startseite">
-        <span class="brand-badge">5</span>
-        <span class="brand-text">
-          <strong>5er Pasch</strong>
-          <small>Minecraft SMP</small>
-        </span>
-      </a>
-
-      <button type="button" id="menu-toggle" class="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menü öffnen">
-        <span></span><span></span><span></span>
-      </button>
-
-      <nav id="site-nav" class="site-nav" aria-label="Hauptnavigation">
-        <a href="#about">Welcome</a>
-        <a href="#projekte">Baufortschritt</a>
-        <a href="#fortschritt">Weltfortschritt</a>
-        <a href="#karte">Karte</a>
-        <a href="#spieler">Spieler</a>
+  <header class="header" id="top">
+    <div class="shell nav">
+      <a class="wordmark" href="#top" aria-label="5er Pasch – Startseite">5er Pasch<span class="wordmark-point">.</span></a>
+      <nav class="navigation" aria-label="Navigation">
+        <a href="#welt">Unsere Welt</a>
+        <a href="#projekte">Projekte</a>
+        <a class="discord-nav" data-discord href="#" aria-disabled="true">Discord <span aria-hidden="true">↗</span></a>
       </nav>
-
-      <a href="#join" class="nav-cta">Mitspielen</a>
     </div>
   </header>
 
   <main>
-    <section class="hero-section">
-      <img class="hero-image" src="https://cdn.modrinth.com/data/GO8ghx0J/images/9520376dca34bf77d222aba551e6f22599df8566.jpeg" fetchpriority="high" decoding="async" alt="Echter Minecraft-Ingame-Screenshot eines gemütlichen Dorfes am Fluss mit Shaders bei Abendlicht" />
-      <div class="hero-overlay"></div>
-      <div class="hero-vignette"></div>
-      <div class="container hero-layout">
-        <div class="hero-copy">
-          <span class="hero-kicker">Willkommen auf unserem Server</span>
-          <h1>5er Pasch</h1>
-          <p id="hero-description">
-            Eine kleine Minecraft-Welt mit großen Ideen. Hier sammeln wir unsere Bauprojekte,
-            Weltfortschritte und alles, was unseren Server nach und nach besonders macht.
-          </p>
-
-          <div class="hero-actions">
-            <a class="button button-primary" href="#join">Serverinfos</a>
-            <a class="button button-secondary" href="#projekte">Baufortschritt ansehen</a>
-          </div>
-
-          <div class="hero-community">
-            <div class="avatars" id="hero-avatars" aria-hidden="true">
-              <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-            </div>
-            <span>Fünf Spieler, ein Server und immer neue Ideen.</span>
-          </div>
+    <section class="hero" aria-labelledby="hero-title">
+      <img
+        class="hero-image"
+        src="https://cdn.modrinth.com/data/GO8ghx0J/images/9520376dca34bf77d222aba551e6f22599df8566.jpeg"
+        alt="Minecraft-Landschaft mit Shadern und warmem Abendlicht"
+        fetchpriority="high"
+        decoding="async">
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="shell hero-content">
+        <p class="overline">Minecraft Survival · SMP</p>
+        <h1 id="hero-title">5er Pasch</h1>
+        <p class="hero-lead">Fünf Freunde. Eine Welt. Und jede Menge Ideen.</p>
+        <div class="hero-actions">
+          <button id="copy-ip" class="btn btn-light" type="button" disabled>
+            <span id="ip-label">Server-IP folgt</span><span class="btn-symbol" aria-hidden="true">↗</span>
+          </button>
+          <a class="btn btn-outline" data-discord href="#" aria-disabled="true">Unser Discord <span class="btn-symbol" aria-hidden="true">↗</span></a>
         </div>
-
-        <aside class="hero-panel glass-card" id="join">
-          <span class="eyebrow">Join the server</span>
-          <h2 id="server-name">5er Pasch</h2>
-          <p class="hero-panel-text">Hier findest du alles Wichtige auf einen Blick. IP kopieren, Discord öffnen und direkt in unsere kleine Welt reinschauen.</p>
-
-          <div class="quick-row">
-            <span>Serverstatus</span>
-            <strong id="hero-server-state">Noch nicht verbunden</strong>
-          </div>
-          <div class="quick-row">
-            <span>Spieler online</span>
-            <strong id="hero-online-count">– / –</strong>
-          </div>
-          <div class="quick-row">
-            <span>Minecraft</span>
-            <strong id="hero-version">–</strong>
-          </div>
-
-          <div class="join-card">
-            <span class="mini-label">Server-IP</span>
-            <div class="ip-row hero-ip-row">
-              <code id="server-address">Noch nicht festgelegt</code>
-              <button type="button" class="copy-btn" id="copy-ip" disabled aria-label="Server-IP kopieren" title="Server-IP kopieren">⧉</button>
-            </div>
-          </div>
-
-          <div class="hero-links">
-            <a class="button button-primary full-width" id="discord-link" href="#" target="_blank" rel="noopener noreferrer">Discord öffnen</a>
-            <a class="text-link" href="#karte">Zur Weltkarte →</a>
-          </div>
-        </aside>
       </div>
-      <a class="hero-credit" href="https://modrinth.com/shader/complementary-reimagined" target="_blank" rel="noopener noreferrer">Beispiel-Screenshot: Complementary Reimagined · Modrinth</a>
+      <a href="#welt" class="scroll-cue">Mehr entdecken <span aria-hidden="true">↓</span></a>
+      <p class="photo-credit"><a href="https://modrinth.com/shader/complementary-reimagined" target="_blank" rel="noopener noreferrer">Bild: Complementary Reimagined / Modrinth</a></p>
     </section>
 
-    <section id="about" class="section intro-section">
-      <div class="container intro-grid">
+    <section class="intro section-pad" id="welt">
+      <div class="shell intro-grid">
         <div>
-          <span class="section-kicker">Welcome</span>
-          <h2>Eine ruhige Survival-Welt mit Platz für große Projekte.</h2>
-          <p id="welcome-copy">
-            5er Pasch ist unser gemeinsamer Minecraft-Server. Die Website soll nicht alles auf einmal zeigen,
-            sondern vor allem einen schönen Überblick geben: wie unsere Welt aussieht, woran wir bauen und wie weit wir schon sind.
-          </p>
+          <p class="overline">Willkommen bei uns</p>
+          <h2>Unsere kleine Welt.</h2>
         </div>
-
-        <div class="intro-cards">
-          <article class="info-card soft-card">
-            <span class="chip-label">Server</span>
-            <strong id="server-state">Noch nicht verbunden</strong>
-            <p id="server-message">Trage deine Serveradresse in config.js ein, damit der Live-Status angezeigt wird.</p>
-          </article>
-          <article class="info-card soft-card">
-            <span class="chip-label">Weltfortschritt</span>
-            <strong id="hero-world-progress">Welt wächst weiter</strong>
-            <p id="world-short-copy">Vom Spawn bis zur Megabase. Alles entwickelt sich Schritt für Schritt.</p>
-          </article>
+        <div class="intro-side">
+          <p>5er Pasch ist unser gemeinsamer Survival-Server. Hier halten wir fest, was wir bauen und was wir zusammen erleben.</p>
+          <p class="server-meta">
+            <span class="status-dot" id="server-dot" aria-hidden="true"></span>
+            <span id="server-status">Serveradresse folgt</span>
+            <span class="meta-separator" aria-hidden="true">/</span>
+            <span id="server-players">5 Spieler</span>
+          </p>
         </div>
       </div>
     </section>
 
-    <section id="projekte" class="section">
-      <div class="container">
+    <section class="projects section-pad" id="projekte">
+      <div class="shell">
         <div class="section-heading">
           <div>
-            <span class="section-kicker">Baufortschritt</span>
-            <h2>Woran wir gerade bauen</h2>
-            <p>Kein riesiges Dashboard, sondern ein ruhiger Überblick über die wichtigsten Projekte unserer Welt.</p>
+            <p class="overline">Was gerade passiert</p>
+            <h2>Aus unserer Welt.</h2>
           </div>
+          <a class="small-link" href="#top">Zurück nach oben <span aria-hidden="true">↑</span></a>
         </div>
-        <div id="projects-grid" class="projects-grid" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <section id="fortschritt" class="section section-dark">
-      <div class="container progress-layout">
-        <div>
-          <div class="section-heading compact">
-            <div>
-              <span class="section-kicker">Weltfortschritt</span>
-              <h2>Meilensteine unserer Welt</h2>
-              <p>Die wichtigsten Schritte, die unseren Server Stück für Stück weiterbringen.</p>
+        <div class="simple-grid">
+          <div class="simple-column">
+            <div class="column-head"><h3>Bauprojekte</h3><span id="project-count"></span></div>
+            <div id="projects-list" class="clean-list">
+              <p class="empty-copy">Hier zeigen wir bald unsere ersten Bauprojekte.</p>
             </div>
           </div>
-          <div class="milestone-list" id="milestone-list"></div>
-        </div>
-
-        <aside class="progress-card soft-card">
-          <span class="chip-label">Gesamtfortschritt</span>
-          <div class="world-percent" id="world-percent">–%</div>
-          <div class="track"><span id="world-bar" style="width:0%"></span></div>
-          <p id="world-info">Fortschritt der eingetragenen Meilensteine.</p>
-        </aside>
-      </div>
-    </section>
-
-    <section id="karte" class="section">
-      <div class="container split-grid">
-        <div>
-          <div class="section-heading compact">
-            <div>
-              <span class="section-kicker">Weltkarte</span>
-              <h2>Ein Blick auf unsere Welt</h2>
-              <p>Wenn BlueMap eingerichtet ist, kann hier später eure richtige Welt live angesehen werden.</p>
+          <div class="simple-column">
+            <div class="column-head"><h3>Weltfortschritt</h3><span id="progress-count"></span></div>
+            <div id="milestones-list" class="clean-list">
+              <p class="empty-copy">Unsere nächsten Meilensteine folgen.</p>
             </div>
           </div>
-
-          <div class="map-frame soft-card" id="map-frame">
-            <div class="map-placeholder">
-              <div class="map-placeholder-badge">BlueMap</div>
-              <h3>Eure Karte kommt hier rein</h3>
-              <p>Sobald eure Karte online ist, wird sie hier automatisch angezeigt.</p>
-            </div>
-          </div>
-          <a id="map-external-link" class="text-link hidden map-link" href="#karte" target="_blank" rel="noopener noreferrer">Karte im neuen Tab öffnen ↗</a>
         </div>
-
-        <aside class="discord-panel soft-card">
-          <span class="section-kicker">Community</span>
-          <h2>Discord & Server</h2>
-          <p>Für Updates, Absprachen und alles rund um 5er Pasch darf natürlich euer Discord nicht fehlen.</p>
-          <div class="join-card dark-card">
-            <span class="mini-label">Discord</span>
-            <p class="join-copy">Tretet unserem Server bei, bleibt auf dem Laufenden und verfolgt, wie sich die Welt weiterentwickelt.</p>
-            <a class="button button-primary full-width" id="discord-link-secondary" href="#" target="_blank" rel="noopener noreferrer">Discord beitreten</a>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="spieler" class="section section-soft">
-      <div class="container">
-        <div class="section-heading compact">
-          <div>
-            <span class="section-kicker">Spieler</span>
-            <h2>Die Crew hinter 5er Pasch</h2>
-            <p>Die Menschen hinter den Projekten, Ideen und kleinen Survival-Momenten.</p>
-          </div>
+        <div class="map-area" id="map-area" hidden>
+          <span>Unsere Welt von oben ansehen</span>
+          <a id="map-link" href="#" target="_blank" rel="noopener noreferrer">Weltkarte öffnen <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="players-grid" id="players-grid"></div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <a class="brand brand-footer" href="#top">
-        <span class="brand-badge">5</span>
-        <span class="brand-text">
-          <strong>5er Pasch</strong>
-          <small>Minecraft SMP</small>
-        </span>
-      </a>
-      <p>Eine kleine Welt, die immer weiter wächst.</p>
-      <span>© <span id="copyright-year">2026</span> 5er Pasch</span>
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <span>5er Pasch © <span id="year">2026</span></span>
+      <span>Mit Freunden gebaut.</span>
     </div>
   </footer>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
