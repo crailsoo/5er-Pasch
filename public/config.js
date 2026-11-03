@@ -1,7 +1,7 @@
 /*
   5ER PASCH – EINSTELLUNGEN
   Diese Datei könnt ihr direkt auf GitHub bearbeiten.
-  Leere serverAddress = kein Live-Status. Leere bluemapUrl = Platzhalterkarte.
+  Leere serverAddress = kein Live-Status. Leere bluemapUrl = keine Kartenverlinkung.
   Alle untenstehenden Projekte, Meilensteine und Updates sind DEMODATEN.
 */
 window.SITE_CONFIG = {
@@ -14,12 +14,11 @@ window.SITE_CONFIG = {
   bedrockAddress: "", // optional, falls ihr eine separate Bedrock-Adresse anzeigen wollt
   edition: "java", // "java" oder "bedrock" für die Statusabfrage
   bluemapUrl: "", // z. B. "https://map.deinedomain.de" – HTTPS für Einbettung erforderlich
+  // Alle Servermitglieder für die Website eintragen, zum Beispiel:
+  // { name: "Anzeigename", username: "MinecraftUsername", role: "Spieler" }
+  // "username" ist der echte Java-Minecraft-Name für das Skin-Bild.
+  // Die Live-Liste unter "Gerade online" wird separat aus dem Serverstatus geladen.
   players: [
-    { name: "Spieler 01", username: "", role: "Baumeister" },
-    { name: "Spieler 02", username: "", role: "Entdecker" },
-    { name: "Spieler 03", username: "", role: "Redstone" },
-    { name: "Spieler 04", username: "", role: "Farmer" },
-    { name: "Spieler 05", username: "", role: "Abenteurer" }
   ],
   projects: [
     { title: "Die Bergfestung", category: "MEGABASE", status: "bau", progress: 72, builders: ["Spieler 01", "Spieler 02"], description: "Eine Festung direkt im Gebirge, mit mächtigen Mauern, geheimen Gängen und einer Aussicht über das ganze Tal.", image: "", theme: "mountain", demo: true },

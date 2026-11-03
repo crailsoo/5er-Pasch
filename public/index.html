@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101110">
-  <meta name="description" content="5er Pasch – unser Minecraft Survival Server. Eine Welt, fünf Freunde und viele Ideen.">
+  <meta name="description" content="5er Pasch – Minecraft Survival SMP. Spieler, Live-Status und Bauprojekte.">
   <title>5er Pasch · Minecraft SMP</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,11 +17,18 @@
   <header class="header" id="top">
     <div class="shell nav">
       <a class="wordmark" href="#top" aria-label="5er Pasch – Startseite">5er Pasch<span class="wordmark-point">.</span></a>
-      <nav class="navigation" aria-label="Navigation">
-        <a href="#welt">Unsere Welt</a>
-        <a href="#projekte">Projekte</a>
-        <a class="discord-nav" data-discord href="#" aria-disabled="true">Discord <span aria-hidden="true">↗</span></a>
-      </nav>
+      <div class="menu-wrap">
+        <button type="button" class="menu-toggle" id="menu-toggle" aria-controls="site-menu" aria-expanded="false" aria-label="Navigationsmenü öffnen">
+          <span>Menü</span>
+          <span class="menu-glyph" aria-hidden="true"><i></i><i></i></span>
+        </button>
+        <nav class="menu-panel" id="site-menu" aria-label="Hauptnavigation" hidden>
+          <a href="#top">Startseite <span aria-hidden="true">01</span></a>
+          <a href="#spieler">Spieler <span aria-hidden="true">02</span></a>
+          <a href="#projekte">Projekte <span aria-hidden="true">03</span></a>
+          <a data-discord href="#" aria-disabled="true">Discord <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -37,7 +44,6 @@
       <div class="shell hero-content">
         <p class="overline">Minecraft Survival · SMP</p>
         <h1 id="hero-title">5er Pasch</h1>
-        <p class="hero-lead">Fünf Freunde. Eine Welt. Und jede Menge Ideen.</p>
         <div class="hero-actions">
           <button id="copy-ip" class="btn btn-light" type="button" disabled>
             <span id="ip-label">Server-IP folgt</span><span class="btn-symbol" aria-hidden="true">↗</span>
@@ -49,20 +55,34 @@
       <p class="photo-credit"><a href="https://modrinth.com/shader/complementary-reimagined" target="_blank" rel="noopener noreferrer">Bild: Complementary Reimagined / Modrinth</a></p>
     </section>
 
-    <section class="intro section-pad" id="welt">
-      <div class="shell intro-grid">
-        <div>
-          <p class="overline">Willkommen bei uns</p>
-          <h2>Unsere kleine Welt.</h2>
-        </div>
-        <div class="intro-side">
-          <p>5er Pasch ist unser gemeinsamer Survival-Server. Hier halten wir fest, was wir bauen und was wir zusammen erleben.</p>
-          <p class="server-meta">
+    <section class="crew-section section-pad" id="spieler">
+      <div class="shell">
+        <div class="section-heading crew-heading">
+          <div>
+            <p class="overline">Die Crew</p>
+            <h2>Unsere Spieler.</h2>
+          </div>
+          <p class="server-meta" aria-live="polite">
             <span class="status-dot" id="server-dot" aria-hidden="true"></span>
-            <span id="server-status">Serveradresse folgt</span>
+            <span id="server-status">Server-IP noch nicht eingetragen</span>
             <span class="meta-separator" aria-hidden="true">/</span>
-            <span id="server-players">5 Spieler</span>
+            <span id="server-players">– online</span>
           </p>
+        </div>
+
+        <div class="simple-grid crew-grid">
+          <div class="simple-column">
+            <div class="column-head"><h3>Mitglieder</h3><span id="members-count"></span></div>
+            <div id="members-list" class="clean-list" aria-live="polite">
+              <p class="empty-copy">Die Spielernamen werden noch ergänzt.</p>
+            </div>
+          </div>
+          <div class="simple-column">
+            <div class="column-head"><h3>Gerade online</h3><span id="online-count">–</span></div>
+            <div id="online-list" class="clean-list" aria-live="polite">
+              <p class="empty-copy">Live-Anzeige folgt, sobald die Server-IP eingetragen ist.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
