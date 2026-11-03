@@ -18,6 +18,11 @@ window.SITE_CONFIG = {
   // { name: "Anzeigename", username: "MinecraftUsername", role: "Spieler" }
   // "username" ist der echte Java-Minecraft-Name für das Skin-Bild.
   // Die Live-Liste unter "Gerade online" wird separat aus dem Serverstatus geladen.
+  // Bekannte Ereignisse unserer Welt; neue Einträge mit date (JJJJ-MM-TT), title und description.
+  chronicle: [
+    { date: "2026-11-03", title: "Unsere Welt bekommt eine Karte", description: "BlueMap wird auf dem Paper-Server eingerichtet und der Render unserer Welt beginnt." }
+  ],
+  // Optionale Spielerprofil-Felder: joined, base, description. Ohne Werte werden sie ausgeblendet.
   players: [
     { name: "sams939", username: "sams939", role: "Server Owner" },
     { name: "SALTYPIMP", username: "SALTYPIMP", role: "Spieler" },

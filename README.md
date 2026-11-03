@@ -108,3 +108,7 @@ Cloudflare-Kompatibilitätsdatum 2024-09-02 oder neuer verwenden, damit
 ausgehende Fetch-Anfragen auf Port 8189 nicht auf Port 80 umgeleitet werden.
 Gegebenenfalls in Cloudflare Pages > Settings > Functions > Compatibility Date
 für Production und Preview entsprechend einstellen.
+
+## Spielerprofile und Welt-Chronik
+
+Die Charaktere auf der Startseite lassen sich anklicken. Im Profil erscheinen Skin, Name, Rolle und Live-Status. Optional lassen sich in public/config.js pro Spieler joined, base und description eintragen. Unbekannte Angaben werden nicht erfunden. Die Welt-Chronik wird aus SITE_CONFIG.chronicle mit date (YYYY-MM-DD), title und description befüllt. Als erstes bestätigtes Ereignis ist der BlueMap-Start am 3. November 2026 enthalten.

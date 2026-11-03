@@ -73,6 +73,60 @@
     return e;
   }
 
+
+  const profileDialog=$("#player-profile");
+  let activeProfile=null, profileOpener=null;
+  $("#profile-close")?.addEventListener("click",()=>profileDialog.close());
+  profileDialog?.addEventListener("click",e=>{if(e.target===profileDialog)profileDialog.close()});
+  profileDialog?.addEventListener("close",()=>{
+    activeProfile=null;
+    if(profileOpener?.isConnected)profileOpener.focus();
+    profileOpener=null;
+  });
+  function setProfileSkin(username,name){
+    const img=$("#profile-image"),fallback=$("#profile-fallback");
+    img.onerror=null;
+    img.hidden=false;fallback.hidden=true;
+    const showFallback=()=>{
+      img.hidden=true;fallback.hidden=false;fallback.textContent=name.charAt(0).toUpperCase();
+    };
+    if(!/^[A-Za-z0-9_]{3,16}$/.test(username)){showFallback();return;}
+    let triedBackup=false;
+    img.onerror=()=>{
+      if(!triedBackup){triedBackup=true;img.src="https://mc-heads.net/player/"+encodeURIComponent(username)+"/480"}
+      else showFallback();
+    };
+    img.src="https://skinrender.dev/render/"+encodeURIComponent(username)+"/body?size=480";
+  }
+  function updateProfileStatus(){
+    if(!activeProfile)return;
+    const user=get(activeProfile.username),name=get(activeProfile.name)||user;
+    const card=cardStatusNodes.get(user.toLowerCase()||name.toLowerCase());
+    const klass=card?.presence.className||"";
+    const state=klass.includes("is-online")?"online":klass.includes("is-offline")?"offline":"unknown";
+    $("#profile-status").className="profile-status is-"+state;
+    $("#profile-status-text").textContent=state==="online"?"Online":state==="offline"?"Offline":"Status unbekannt";
+  }
+  function openProfile(person,trigger){
+    if(!profileDialog)return;
+    activeProfile=person;profileOpener=trigger;
+    const name=get(person.name)||get(person.username),username=get(person.username);
+    $("#profile-name").textContent=name;
+    $("#profile-role").textContent=get(person.role)||"Mitglied";
+    $("#profile-username").textContent=username||"Nicht hinterlegt";
+    for(const key of ["joined","base"]){
+      const value=get(person[key]);
+      $("#profile-"+key+"-row").hidden=!value;
+      $("#profile-"+key).textContent=value;
+    }
+    const description=get(person.description);
+    $("#profile-about").textContent=description;
+    $("#profile-about").hidden=!description;
+    setProfileSkin(username,name);
+    updateProfileStatus();
+    if(!profileDialog.open)profileDialog.showModal();
+  }
+
   function renderRoster(){
     if(!memberList)return;
     memberList.replaceChildren();
@@ -128,7 +182,13 @@
       const state=makeEl("span","presence-text","Wird geprüft …");
       presence.append(light,state);
       details.append(label,presence);
-      card.append(stage,details);
+      const trigger=makeEl("button","player-card-open");
+      trigger.type="button";
+      trigger.setAttribute("aria-haspopup","dialog");
+      trigger.setAttribute("aria-label","Profil von "+name+" öffnen");
+      trigger.append(stage,details);
+      trigger.addEventListener("click",()=>openProfile(person,trigger));
+      card.append(trigger);
       memberList.append(card);
       cardStatusNodes.set(username.toLowerCase()||name.toLowerCase(),{presence,state,name,username});
     });
@@ -145,6 +205,7 @@
       entry.state.textContent=next==="online"?"Online":next==="offline"?"Offline":"Status unbekannt";
       entry.presence.setAttribute("aria-label",entry.name+": "+entry.state.textContent);
     }
+    if(activeProfile)updateProfileStatus();
   }
 
   function renderOnline(message,listed,total){
@@ -221,6 +282,38 @@
     status.textContent="Server-IP noch nicht eingetragen";
     players.textContent="– online";
     renderOnline("Live-Status wird nach Einrichtung der IP angezeigt.",[],null);
+  }
+
+
+  const chronicleRoot=$("#chronicle-list");
+  if(chronicleRoot){
+    const entries=(Array.isArray(cfg.chronicle)?cfg.chronicle:[])
+      .filter(event=>event&&event.demo!==true&&get(event.title))
+      .slice(0,12);
+    if(entries.length){
+      chronicleRoot.replaceChildren();
+      for(const event of entries){
+        const article=makeEl("article","chronicle-entry");
+        const marker=makeEl("span","chronicle-marker");
+        marker.setAttribute("aria-hidden","true");
+        const time=makeEl("time","chronicle-date");
+        const date=get(event.date);
+        if(/^\d{4}-\d{2}-\d{2}$/.test(date)){
+          const parsed=new Date(date+"T12:00:00");
+          if(!isNaN(parsed.getTime())){
+            time.dateTime=date;
+            time.textContent=parsed.toLocaleDateString("de-DE",{day:"numeric",month:"long",year:"numeric"});
+          }
+        }
+        if(!time.textContent)time.textContent=get(event.dateLabel)||"Ohne Datum";
+        const copy=makeEl("div","chronicle-body");
+        copy.append(makeEl("h3","",get(event.title)));
+        const desc=get(event.description);
+        if(desc)copy.append(makeEl("p","",desc));
+        article.append(marker,time,copy);
+        chronicleRoot.append(article);
+      }
+    }
   }
 
   // Show real projects only. The starter project's example projects remain in config.js

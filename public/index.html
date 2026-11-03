@@ -28,7 +28,8 @@
           <a href="#spieler">Spieler <span aria-hidden="true">02</span></a>
           <a href="#projekte">Projekte <span aria-hidden="true">03</span></a>
           <a href="#weltkarte">Weltkarte <span aria-hidden="true">04</span></a>
-          <a href="stats.html">Stats <span aria-hidden="true">05</span></a>
+          <a href="#chronik">Chronik <span aria-hidden="true">05</span></a>
+        <a href="stats.html">Stats <span aria-hidden="true">06</span></a>
           <a data-discord href="#" aria-disabled="true">Discord <span aria-hidden="true">↗</span></a>
         </nav>
       </div>
@@ -132,6 +133,18 @@
         </div>
       </div>
     </section>
+
+    <section class="chronicle-section section-pad" id="chronik" aria-labelledby="chronicle-heading">
+      <div class="shell">
+        <div class="chronicle-heading">
+          <p class="overline">Welt-Chronik</p>
+          <h2 id="chronicle-heading">Unsere Geschichte.</h2>
+        </div>
+        <div class="chronicle-list" id="chronicle-list" aria-label="Ereignisse unserer Welt">
+          <p class="empty-copy">Unsere gemeinsame Geschichte wächst mit der Welt.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -140,6 +153,32 @@
       <span>Mit Freunden gebaut.</span>
     </div>
   </footer>
+
+<dialog id="player-profile" class="profile-dialog" aria-labelledby="profile-name">
+  <div class="profile-dialog-inner">
+    <button type="button" class="profile-close" id="profile-close" aria-label="Profil schließen">×</button>
+    <div class="profile-art">
+      <span class="profile-halo" aria-hidden="true"></span>
+      <img id="profile-image" alt="Minecraft-Skin" decoding="async">
+      <span class="profile-fallback" id="profile-fallback" hidden></span>
+    </div>
+    <div class="profile-details">
+      <p class="overline">Spielerprofil</p>
+      <h2 id="profile-name"></h2>
+      <p class="profile-role" id="profile-role"></p>
+      <div class="profile-status is-unknown" id="profile-status" aria-live="polite">
+        <span class="presence-light" aria-hidden="true"></span>
+        <span id="profile-status-text">Status wird geprüft</span>
+      </div>
+      <dl class="profile-facts">
+        <div><dt>Minecraft-Name</dt><dd id="profile-username"></dd></div>
+        <div id="profile-joined-row" hidden><dt>Dabei seit</dt><dd id="profile-joined"></dd></div>
+        <div id="profile-base-row" hidden><dt>Basis</dt><dd id="profile-base"></dd></div>
+      </dl>
+      <p class="profile-about" id="profile-about" hidden></p>
+    </div>
+  </div>
+</dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
