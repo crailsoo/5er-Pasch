@@ -82,3 +82,29 @@ Blöcke sind über die Status-Abfrage nicht verfügbar. Dafür wäre ein separat
 Server-Plugin mit Statistik-API nötig.
 
 API-Dokumentation: https://mcstatus.io/docs
+
+## Eingebettete HTTPS-BlueMap (Cloudflare Pages Function)
+
+Die Karte auf /map.html wird nun über eine eigene Pages Function eingebettet.
+Die Dateien liegen in /functions/bluemap/[[path]].js, bei Aufrufen der Website
+erscheint der Live-Renderer unter https://5erpasch.pages.dev/bluemap/index.html.
+Die Cloudflare-Pages-Datei public/_routes.json begrenzt Functions-Aufrufe auf
+/bluemap/*, damit alle anderen Website-Assets statisch bleiben.
+
+Technischer Hintergrund: BlueMap läuft auf http://45.143.198.58:8189/.
+Cloudflare Workers können nicht direkt IP-Adressen mit fetch abrufen.
+Deshalb verwendet der fest konfigurierte Proxy den DNS-Alias
+45-143-198-58.sslip.io, der auf die Server-IP auflöst. Dieser externe
+DNS-Dienst kann später durch einen eigenen DNS-only A-Eintrag ersetzt werden.
+Der Proxy holt ausschließlich Inhalte von diesem Server, kein freier URL-Proxy.
+
+**Hinweis:** Diese Verbindung hängt vom Minecraft-Server, der DNS-Auflösung
+und Cloudflare Pages Functions ab und muss nach dem Deployment im echten
+Browser geprüft werden. Bei Verbindungsproblemen zeigt die Kartenansicht
+weiterhin den direkten BlueMap-Link. Karten-Tiles erzeugen bei Nutzung viele
+Functions-Aufrufe (Cloudflare-Free-Tarif-Limit beachten).
+
+Cloudflare-Kompatibilitätsdatum 2024-09-02 oder neuer verwenden, damit
+ausgehende Fetch-Anfragen auf Port 8189 nicht auf Port 80 umgeleitet werden.
+Gegebenenfalls in Cloudflare Pages > Settings > Functions > Compatibility Date
+für Production und Preview entsprechend einstellen.
