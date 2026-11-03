@@ -53,6 +53,7 @@
     });
   }
 
+  // FitnaCraft-inspired member showcase: real Minecraft skin renders, subtle online badges.
   const status=$("#server-status"),players=$("#server-players"),dot=$("#server-dot");
   const memberList=$("#members-list"),onlineList=$("#online-list");
   const roster=(Array.isArray(cfg.players)?cfg.players:[]).filter(p=>{
@@ -61,74 +62,115 @@
     return Boolean(user)||(Boolean(name)&&!/^Spieler\s*0?\d+$/i.test(name));
   });
   const onlineKnown=new Set();
+  const cardStatusNodes=new Map();
   let hasFullOnlineList=false;
   let serverAvailability="unknown";
-  function rowForPlayer(name,username,subtitle,onlineState){
-    const row=document.createElement("div");row.className="item-row member-row";
-    const identity=document.createElement("div");identity.className="member-identity";
-    const avatar=document.createElement("span");avatar.className="member-head";
-    const validUser=/^[A-Za-z0-9_]{3,16}$/.test(username||"");
-    if(validUser){
-      const img=document.createElement("img");
-      img.src="https://mc-heads.net/avatar/"+encodeURIComponent(username)+"/64";
-      img.alt="";
-      img.loading="lazy";
-      img.addEventListener("error",()=>{avatar.textContent=(name||username).slice(0,1).toUpperCase();img.remove();});
-      avatar.append(img);
-    }else avatar.textContent=(name||"?").slice(0,1).toUpperCase();
-    const text=document.createElement("div");text.className="member-name";
-    const heading=document.createElement("h4");heading.textContent=name;
-    text.append(heading);
-    if(subtitle){const p=document.createElement("p");p.textContent=subtitle;text.append(p);}
-    identity.append(avatar,text);row.append(identity);
-    if(onlineState==="online"||onlineState==="offline"){
-      const meta=document.createElement("span");meta.className="item-meta";meta.textContent=onlineState==="online"?"Online":"Offline";
-      row.append(meta);
-    }
-    return row;
+
+  function makeEl(tag,cls,content){
+    const e=document.createElement(tag);
+    if(cls)e.className=cls;
+    if(content!==undefined)e.textContent=String(content);
+    return e;
   }
+
   function renderRoster(){
     if(!memberList)return;
     memberList.replaceChildren();
-    $("#members-count").textContent=roster.length?roster.length+" Mitglieder":"Noch offen";
+    cardStatusNodes.clear();
     if(!roster.length){
-      const p=document.createElement("p");p.className="empty-copy";
-      p.textContent="Die Mitgliedernamen können in config.js eingetragen werden.";
-      memberList.append(p);return;
+      memberList.append(makeEl("p","empty-copy","Die ersten Spieler werden noch eingetragen."));
+      return;
     }
-    roster.forEach(p=>{
-      const name=get(p.name)||get(p.username);
-      const user=get(p.username);
-      const matched=[name.toLowerCase(),user.toLowerCase()].some(s=>s&&onlineKnown.has(s));
-      const state=matched?"online":(serverAvailability==="offline"||hasFullOnlineList)?"offline":"unknown";
-      memberList.append(rowForPlayer(name,user,get(p.role),state));
+
+    roster.forEach((person,index)=>{
+      const username=get(person.username);
+      const name=get(person.name)||username;
+      const role=get(person.role);
+      const validUser=/^[A-Za-z0-9_]{3,16}$/.test(username);
+      const card=makeEl("article","player-showcase-card");
+      card.setAttribute("role","listitem");
+      card.style.setProperty("--card-index",String(index));
+
+      const stage=makeEl("div","player-character-stage");
+      const orb=makeEl("span","player-character-orb");
+      orb.setAttribute("aria-hidden","true");
+      const character=makeEl("div","player-character");
+      if(validUser){
+        const img=makeEl("img","player-character-image");
+        img.src="https://skinrender.dev/render/"+encodeURIComponent(username)+"/body?size=480";
+        img.alt="Minecraft-Charakter von "+name;
+        img.loading="lazy";
+        img.decoding="async";
+        let fallbackUsed=false;
+        img.addEventListener("error",()=>{
+          if(!fallbackUsed){
+            fallbackUsed=true;
+            img.src="https://mc-heads.net/player/"+encodeURIComponent(username)+"/480";
+          }else{
+            img.remove();
+            character.append(makeEl("span","player-character-fallback",name.slice(0,1).toUpperCase()));
+          }
+        });
+        character.append(img);
+      }else{
+        character.append(makeEl("span","player-character-fallback",name.slice(0,1).toUpperCase()));
+      }
+      stage.append(orb,character);
+
+      const details=makeEl("div","player-card-info");
+      const label=makeEl("div","player-card-identity");
+      label.append(makeEl("h3","player-name",name));
+      const roleLabel=makeEl("p","player-role",role||"Mitglied");
+      label.append(roleLabel);
+      const presence=makeEl("div","player-presence is-unknown");
+      const light=makeEl("span","presence-light");
+      light.setAttribute("aria-hidden","true");
+      const state=makeEl("span","presence-text","Wird geprüft …");
+      presence.append(light,state);
+      details.append(label,presence);
+      card.append(stage,details);
+      memberList.append(card);
+      cardStatusNodes.set(username.toLowerCase()||name.toLowerCase(),{presence,state,name,username});
     });
+    updateCardStatuses();
   }
+
+  function updateCardStatuses(){
+    for(const [key,entry] of cardStatusNodes){
+      const names=[key,entry.name.toLowerCase()].filter(Boolean);
+      const isOnline=names.some(n=>onlineKnown.has(n));
+      const certainty=serverAvailability==="offline"||hasFullOnlineList;
+      const next=isOnline?"online":certainty?"offline":"unknown";
+      entry.presence.className="player-presence is-"+next;
+      entry.state.textContent=next==="online"?"Online":next==="offline"?"Offline":"Status unbekannt";
+      entry.presence.setAttribute("aria-label",entry.name+": "+entry.state.textContent);
+    }
+  }
+
   function renderOnline(message,listed,total){
+    if(!onlineList)return;
     onlineList.replaceChildren();
-    $("#online-count").textContent=typeof total==="number"?total+" online":"–";
+    $("#online-count").textContent=typeof total==="number"?String(total):"–";
     if(listed.length){
-      listed.forEach(p=>{
-        const row=document.createElement("div");row.className="item-row";
-        const label=document.createElement("div");label.className="online-name";
-        const dot=document.createElement("span");dot.className="online-presence";
-        const heading=document.createElement("h4");heading.textContent=p.name;
-        label.append(dot,heading);row.append(label);onlineList.append(row);
+      listed.forEach(person=>{
+        const label=makeEl("span","live-player-tag");
+        const light=makeEl("span","presence-light");
+        light.setAttribute("aria-hidden","true");
+        label.append(light,makeEl("span","",person.name));
+        onlineList.append(label);
       });
-      if(total>listed.length){
-        const hint=document.createElement("p");hint.className="empty-copy";
-        hint.textContent="Weitere "+(total-listed.length)+" Spieler online, Namen nicht verfügbar.";
-        onlineList.append(hint);
+      if(typeof total==="number"&&total>listed.length){
+        onlineList.append(makeEl("span","live-empty","+"+(total-listed.length)+" weitere online · Namen nicht verfügbar"));
       }
     }else{
-      const p=document.createElement("p");p.className="empty-copy";p.textContent=message;
-      onlineList.append(p);
+      onlineList.append(makeEl("span","live-empty",message));
     }
   }
+
   renderRoster();
   if(server){
     status.textContent="Verbindung wird geprüft";
-    renderOnline("Live-Status wird geladen …",[],null);
+    renderOnline("Live-Daten werden geladen …",[],null);
     async function checkStatus(){
       try{
         const ed=cfg.edition==="bedrock"?"bedrock":"java";
@@ -144,8 +186,7 @@
           const list=Array.isArray(data.players?.list)?data.players.list:[];
           const seen=new Set();
           const entries=list.map(p=>({
-            name:get(typeof p==="string"?p:p?.name_clean||p?.name_raw||p?.name),
-            uuid:get(typeof p==="object"?p?.uuid:"")
+            name:get(typeof p==="string"?p:p?.name_clean||p?.name_raw||p?.name)
           })).filter(p=>{
             if(!p.name||seen.has(p.name.toLowerCase()))return false;
             seen.add(p.name.toLowerCase());return true;
@@ -153,25 +194,35 @@
           onlineKnown.clear();
           entries.forEach(p=>onlineKnown.add(p.name.toLowerCase()));
           hasFullOnlineList=count===0||(count!==null&&entries.length>=count);
-          renderOnline(count===0?"Gerade ist niemand auf dem Server.":"Der Server meldet "+(count??"einige")+" Spieler online, überträgt aber keine Namen.",entries,count);
+          renderOnline(count===0?"Gerade ist niemand online.":"Der Server überträgt derzeit keine Spielernamen.",entries,count);
         }else{
-          serverAvailability="offline";hasFullOnlineList=true;onlineKnown.clear();
-          status.textContent="Server offline";dot.className="status-dot offline";players.textContent="0 online";
-          renderOnline("Im Moment ist der Server offline.",[],0);
+          serverAvailability="offline";
+          hasFullOnlineList=true;
+          onlineKnown.clear();
+          status.textContent="Server offline";
+          dot.className="status-dot offline";
+          players.textContent="0 online";
+          renderOnline("Im Moment ist niemand online.",[],0);
         }
       }catch(e){
-        serverAvailability="unknown";hasFullOnlineList=false;onlineKnown.clear();
-        status.textContent="Status nicht verfügbar";dot.className="status-dot";
-        players.textContent="– online";renderOnline("Der Live-Status konnte nicht abgerufen werden.",[],null);
+        serverAvailability="unknown";
+        hasFullOnlineList=false;
+        onlineKnown.clear();
+        status.textContent="Status nicht verfügbar";
+        dot.className="status-dot";
+        players.textContent="– online";
+        renderOnline("Live-Status ist derzeit nicht erreichbar.",[],null);
       }
-      renderRoster();
+      updateCardStatuses();
     }
-    checkStatus();setInterval(checkStatus,60000);
+    checkStatus();
+    setInterval(checkStatus,60000);
   }else{
     status.textContent="Server-IP noch nicht eingetragen";
     players.textContent="– online";
-    renderOnline("Sobald die Server-IP eingetragen ist, erscheinen hier die gerade aktiven Spieler.",[],null);
+    renderOnline("Live-Status wird nach Einrichtung der IP angezeigt.",[],null);
   }
+
   // Show real projects only. The starter project's example projects remain in config.js
   // for editing but will not be presented as if they were real.
   const projects=(Array.isArray(cfg.projects)?cfg.projects:[]).filter(p=>!p.demo).slice(0,4);

@@ -67,29 +67,27 @@
           </div>
           <p class="server-meta" aria-live="polite">
             <span class="status-dot" id="server-dot" aria-hidden="true"></span>
-            <span id="server-status">Server-IP noch nicht eingetragen</span>
+            <span id="server-status">Verbinde mit dem Server …</span>
             <span class="meta-separator" aria-hidden="true">/</span>
             <span id="server-players">– online</span>
           </p>
         </div>
 
-        <div class="simple-grid crew-grid">
-          <div class="simple-column">
-            <div class="column-head"><h3>Mitglieder</h3><span id="members-count"></span></div>
-            <div id="members-list" class="clean-list" aria-live="polite">
-              <p class="empty-copy">Die Spielernamen werden noch ergänzt.</p>
-            </div>
+        <div id="members-list" class="player-showcase" role="list" aria-label="Unsere Minecraft-Spieler">
+          <p class="empty-copy">Die Minecraft-Charaktere werden geladen …</p>
+        </div>
+        <div class="crew-bottom">
+          <div class="crew-bottom-label">
+            <span class="presence-indicator" aria-hidden="true"></span>
+            <span>Gerade auf dem Server</span>
+            <span class="crew-live-number" id="online-count">–</span>
           </div>
-          <div class="simple-column">
-            <div class="column-head"><h3>Gerade online</h3><span id="online-count">–</span></div>
-            <div id="online-list" class="clean-list" aria-live="polite">
-              <p class="empty-copy">Live-Anzeige folgt, sobald die Server-IP eingetragen ist.</p>
-            </div>
+          <div id="online-list" class="live-player-list" aria-live="polite">
+            <span class="live-empty">Online-Spieler werden geladen …</span>
           </div>
         </div>
       </div>
     </section>
-
 
     <section class="map-home" id="weltkarte" aria-labelledby="home-map-heading">
       <div class="shell map-heading"><p class="overline">Unsere Minecraft-Welt</p>
