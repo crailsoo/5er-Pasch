@@ -60,6 +60,7 @@
         } else if (url.protocol === "http:") {
           $("#map-http-link").href = url.href;
           $("#map-http").hidden = false;
+          mapSetup.hidden = true;
         }
       } catch (error) {
         // Ungültige URL: Der Einrichtungshinweis bleibt sichtbar.

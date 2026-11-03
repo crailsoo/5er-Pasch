@@ -13,7 +13,7 @@ window.SITE_CONFIG = {
   serverAddress: "45.143.198.58:25605", // Öffentliche Minecraft-Java-Adresse
   bedrockAddress: "", // optional, falls ihr eine separate Bedrock-Adresse anzeigen wollt
   edition: "java", // "java" oder "bedrock" für die Statusabfrage
-  bluemapUrl: "", // z. B. "https://map.deinedomain.de" – HTTPS für Einbettung erforderlich
+  bluemapUrl: "http://45.143.198.58:8189/#world:-217:0:-4894:2989:-0.05:0:0:0:perspective", // BlueMap ist live; für HTTPS-Einbettung später HTTPS-Link verwenden
   // Alle Servermitglieder für die Website eintragen, zum Beispiel:
   // { name: "Anzeigename", username: "MinecraftUsername", role: "Spieler" }
   // "username" ist der echte Java-Minecraft-Name für das Skin-Bild.

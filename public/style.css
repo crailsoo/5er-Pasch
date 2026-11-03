@@ -252,3 +252,20 @@ h1{font:600 clamp(74px,12vw,154px)/.9 var(--display);letter-spacing:-.07em;margi
  .stats-lower{grid-template-columns:1fr;gap:65px}
  .stats-note{margin-top:55px}
 }
+
+
+/* Direct link to the active BlueMap while its webserver is HTTP-only */
+.map-live{display:grid;grid-template-columns:1.12fr .88fr;gap:70px;align-items:center;border-top:1px solid var(--line);padding:65px 0 55px}
+.map-live[hidden]{display:none}
+.map-live-art{position:relative;min-height:390px;border-radius:11px;overflow:hidden;border:1px solid var(--line-soft);background:radial-gradient(ellipse at 52% 45%,#3b4139 0%,#212722 48%,#151a18 100%)}
+.map-live-art:before{content:"";position:absolute;inset:-80px;opacity:.18;background:repeating-linear-gradient(0deg,transparent 0,transparent 35px,#f5f0e8 36px),repeating-linear-gradient(90deg,transparent 0,transparent 35px,#f5f0e8 36px);transform:rotate(-17deg)}
+.map-live-ring{position:absolute;left:50%;top:50%;width:240px;height:180px;transform:translate(-50%,-50%) rotate(-18deg);border:1px solid rgba(245,240,232,.34);border-radius:43% 57% 51% 49% / 39% 65% 35% 61%;box-shadow:0 0 0 40px rgba(245,240,232,.025),0 0 0 95px rgba(245,240,232,.025)}
+.map-live-mark{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);font-size:46px;color:#f5f0e8;text-shadow:0 0 35px rgba(245,240,232,.5)}
+.map-live-coord{position:absolute;left:23px;bottom:20px;font-size:11px;letter-spacing:.04em;color:rgba(245,240,232,.62)}
+.map-live-copy h2{font:500 clamp(33px,4vw,49px)/1.1 var(--display);letter-spacing:-.05em;margin:16px 0 20px}
+.map-live-copy>p:not(.overline){font-size:14px;line-height:1.9;color:var(--muted);max-width:370px;margin-bottom:26px}
+.map-live .map-live-button{display:inline-flex;align-items:center;justify-content:space-between;gap:35px;min-height:48px;padding:12px 19px;border-radius:99px;color:#1a1b19;background:var(--white);font-size:13px;font-weight:700;text-decoration:none}
+.map-live .map-live-button:hover{background:#fff}
+.map-live-hint{display:block;max-width:330px;font-size:11px;color:var(--muted);line-height:1.8;margin-top:17px}
+@media(max-width:930px){.map-live{gap:36px}.map-live-art{min-height:340px}}
+@media(max-width:650px){.map-live{grid-template-columns:1fr;gap:32px;padding-top:30px}.map-live-art{min-height:260px}.map-live-copy h2{font-size:36px}}
