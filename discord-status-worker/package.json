@@ -1,0 +1,8 @@
+{
+  "name": "5erpasch-discord-status",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test.mjs"
+  }
+}
