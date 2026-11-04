@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'discord-status-worker/**'
+      - 'public/profile-achievements.js'
+      - 'tests/profile-achievements.test.mjs'
       - '.github/workflows/test-discord-status-bot.yml'
   pull_request:
     paths:
@@ -19,4 +21,4 @@ jobs:
         with:
           node-version: '22'
       - name: Test Discord monitoring and secure maintenance controls
-        run: node --test discord-status-worker/test.mjs
+        run: node --test discord-status-worker/test.mjs discord-status-worker/achievements.test.mjs tests/profile-achievements.test.mjs
