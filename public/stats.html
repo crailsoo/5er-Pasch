@@ -10,8 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="leaderboards.css">
   <script src="config.js" defer></script>
   <script src="extras.js" defer></script>
+  <script src="leaderboards.js" defer></script>
 </head>
 <body class="inner-page">
 <header class="header inner-header" id="top">
@@ -91,7 +93,21 @@
         </div>
       </aside>
     </div>
-    <p class="stats-note">Alle Live-Werte stammen aus der öffentlichen Minecraft-Statusabfrage und werden ungefähr jede Minute aktualisiert. Langzeitwerte wie Spielstunden, Tode oder abgebaute Blöcke benötigen ein zusätzliches Statistik-Plugin.</p>
+    <section class="leaderboard-section" aria-labelledby="leaderboard-heading">
+      <div class="leaderboard-head">
+        <div><p class="overline">Direkt aus eurer Survival-Welt</p><h2 id="leaderboard-heading">Ranglisten.</h2></div>
+        <span class="leaderboard-status" id="leaderboard-status" aria-live="polite">Wird geladen …</span>
+      </div>
+      <div class="leaderboard-options" role="group" aria-label="Rangliste auswählen">
+        <button class="leaderboard-option" type="button" data-leaderboard-metric="playTicks" aria-pressed="true">Spielzeit</button>
+        <button class="leaderboard-option" type="button" data-leaderboard-metric="mobKills" aria-pressed="false">Mobs</button>
+        <button class="leaderboard-option" type="button" data-leaderboard-metric="walkedCm" aria-pressed="false">Strecke</button>
+        <button class="leaderboard-option" type="button" data-leaderboard-metric="deaths" aria-pressed="false">Tode</button>
+        <button class="leaderboard-option" type="button" data-leaderboard-metric="jumps" aria-pressed="false">Sprünge</button>
+      </div>
+      <ol class="leaderboard-list" id="leaderboard-list" aria-label="Spieler-Rangliste"></ol>
+    </section>
+    <p class="stats-note">Live-Status etwa jede Minute, Langzeitdaten aus dem 5erPaschPlayerSync-Plugin ungefähr alle fünf Minuten. Die Werte basieren auf den tatsächlichen Minecraft-Statistiken.</p>
   </section>
 </main>
 <footer class="footer inner-footer"><div class="shell footer-inner">
