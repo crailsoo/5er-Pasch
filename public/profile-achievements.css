@@ -1,0 +1,20 @@
+
+/* Additional player profiles: lean responsive stat tiles and selected true milestones */
+.profile-extra{width:100%;margin-top:28px;border-top:1px solid var(--line-soft);padding-top:23px}
+.profile-extra-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+.profile-extra-head h3{margin:0;font:500 19px/1.2 var(--display);letter-spacing:-.025em}
+.profile-data-updated,.profile-achievement-count{color:var(--muted);font-size:10px;white-space:nowrap}
+.profile-stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.profile-stat{display:flex;flex-direction:column;justify-content:center;gap:5px;min-height:70px;padding:13px;border:1px solid var(--line-soft);border-radius:9px;background:rgba(245,240,232,.025)}
+.profile-stat strong{font-size:18px;font-variant-numeric:tabular-nums;font-weight:600;overflow-wrap:anywhere}
+.profile-stat span{color:var(--muted);font-size:11px}
+.profile-data-empty{color:var(--muted);font-size:12px;line-height:1.6;grid-column:1/-1;margin:0;padding:12px 0}
+.profile-achievements-head{margin-top:26px}
+.profile-achievement-list{display:grid;gap:8px}
+.profile-achievement{display:flex;align-items:center;gap:12px;border:1px solid var(--line-soft);border-radius:9px;padding:11px 12px;background:rgba(245,240,232,.02)}
+.profile-achievement-icon{display:grid;place-items:center;flex:0 0 27px;width:27px;height:27px;border-radius:50%;border:1px solid rgba(203,229,180,.25);color:#b7d1ad;font-size:17px}
+.profile-achievement strong{display:block;font-size:12px;line-height:1.35;font-weight:600}
+.profile-achievement time{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.profile-data-note{font-size:10px;color:var(--muted);line-height:1.65;margin:15px 0 0}
+@media(min-width:721px){.profile-details{justify-content:flex-start}.profile-dialog-inner{align-items:stretch}}
+@media(max-width:420px){.profile-stat strong{font-size:16px}.profile-extra-head h3{font-size:18px}}
