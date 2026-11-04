@@ -10,6 +10,8 @@ on:
   pull_request:
     paths:
       - 'discord-status-worker/**'
+      - 'public/profile-achievements.js'
+      - 'tests/profile-achievements.test.mjs'
       - '.github/workflows/test-discord-status-bot.yml'
 
 jobs:
