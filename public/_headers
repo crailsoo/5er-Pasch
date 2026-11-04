@@ -1,7 +1,7 @@
 # Security headers for static Cloudflare Pages assets.
 # Pages Functions must set headers in their own Response objects.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://cdn.modrinth.com https://skinrender.dev https://mc-heads.net; connect-src 'self' https://api.mcstatus.io; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://cdn.modrinth.com https://skinrender.dev https://mc-heads.net; connect-src 'self' https://api.mcstatus.io; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
