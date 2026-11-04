@@ -56,12 +56,15 @@
   // FitnaCraft-inspired member showcase: real Minecraft skin renders, subtle online badges.
   const status=$("#server-status"),players=$("#server-players"),dot=$("#server-dot");
   const memberList=$("#members-list"),onlineList=$("#online-list");
-  const roster=(Array.isArray(cfg.players)?cfg.players:[]).filter(p=>{
+  const staticRoster=(Array.isArray(cfg.players)?cfg.players:[]).filter(p=>{
     if(!p||typeof p!=="object")return false;
     const name=get(p.name),user=get(p.username);
     return Boolean(user)||(Boolean(name)&&!/^Spieler\s*0?\d+$/i.test(name));
   });
+  let roster=staticRoster.slice();
   const onlineKnown=new Set();
+  const syncedOnline=new Set();
+  let syncFresh=false;
   const cardStatusNodes=new Map();
   let hasFullOnlineList=false;
   let serverAvailability="unknown";
@@ -198,8 +201,9 @@
   function updateCardStatuses(){
     for(const [key,entry] of cardStatusNodes){
       const names=[key,entry.name.toLowerCase()].filter(Boolean);
-      const isOnline=names.some(n=>onlineKnown.has(n));
-      const certainty=serverAvailability==="offline"||hasFullOnlineList;
+      const activeNames=syncFresh?syncedOnline:onlineKnown;
+      const isOnline=names.some(n=>activeNames.has(n));
+      const certainty=syncFresh||serverAvailability==="offline"||hasFullOnlineList;
       const next=isOnline?"online":certainty?"offline":"unknown";
       entry.presence.className="player-presence is-"+next;
       entry.state.textContent=next==="online"?"Online":next==="offline"?"Offline":"Status unbekannt";
@@ -209,6 +213,11 @@
   }
 
   function renderOnline(message,listed,total){
+    if(syncFresh){
+      listed=[...syncedOnline].map(name=>({name}));
+      total=listed.length;
+      message="Gerade ist niemand online.";
+    }
     if(!onlineList)return;
     onlineList.replaceChildren();
     $("#online-count").textContent=typeof total==="number"?String(total):"–";
@@ -228,7 +237,46 @@
     }
   }
 
+  // Live roster from our authenticated Paper -> Cloudflare sync.
+  // Missing bindings or network errors never remove the manual fallback members.
+  async function refreshSyncedPlayers(){
+    try {
+      const response=await fetch("/api/players",{cache:"no-store"});
+      if(!response.ok)return;
+      const data=await response.json();
+      if(!data.enabled||!Array.isArray(data.players))return;
+      const merged=new Map();
+      for(const person of staticRoster){
+        const user=get(person.username||person.name);
+        if(user)merged.set(user.toLowerCase(),person);
+      }
+      for(const entry of data.players){
+        const username=get(entry?.username);
+        if(!/^[A-Za-z0-9_]{3,16}$/.test(username))continue;
+        const key=username.toLowerCase();
+        if(!merged.has(key))merged.set(key,{name:username,username,role:"Spieler"});
+      }
+      const next=[...merged.values()];
+      if(JSON.stringify(roster)!==JSON.stringify(next)){
+        roster=next;
+        renderRoster();
+      }
+      syncFresh=Boolean(data.fresh && Array.isArray(data.online));
+      syncedOnline.clear();
+      if(syncFresh){
+        data.online.forEach(name=>{
+          const username=get(name);
+          if(/^[A-Za-z0-9_]{3,16}$/.test(username))syncedOnline.add(username.toLowerCase());
+        });
+        renderOnline("",[],syncedOnline.size);
+      }
+      updateCardStatuses();
+    }catch(_){ /* Public status API and configured members remain usable. */ }
+  }
+
   renderRoster();
+  refreshSyncedPlayers();
+  setInterval(refreshSyncedPlayers,60000);
   if(server){
     status.textContent="Verbindung wird geprüft";
     renderOnline("Live-Daten werden geladen …",[],null);
