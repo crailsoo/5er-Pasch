@@ -1,7 +1,8 @@
 {
   "version": 1,
   "include": [
-    "/bluemap/*"
+    "/bluemap/*",
+    "/api/players"
   ],
   "exclude": []
 }
