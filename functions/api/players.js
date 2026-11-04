@@ -144,7 +144,7 @@ export async function onRequestPost({ request, env }) {
             || !["join", "advancement"].includes(e.type)
             || typeof e.title !== "string" || e.title.length > 120 || !e.title.trim()
             || typeof e.description !== "string" || e.description.length > 240
-            || typeof e.occurredAt !== "string" || !/^\\d{4}-\\d{2}-\\d{2}T/.test(e.occurredAt)
+            || typeof e.occurredAt !== "string" || !/^\d{4}-\d{2}-\d{2}T/.test(e.occurredAt)
             || !Number.isFinite(Date.parse(e.occurredAt))
             || Date.parse(e.occurredAt) > Date.now() + 600000) {
           return reply({ error: "Ungültiges Chronik-Ereignis" }, 400);
