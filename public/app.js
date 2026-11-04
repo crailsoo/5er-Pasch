@@ -128,6 +128,7 @@
     setProfileSkin(username,name);
     updateProfileStatus();
     if(!profileDialog.open)profileDialog.showModal();
+    document.dispatchEvent(new CustomEvent("5erpasch:profile-open",{detail:{username}}));
   }
 
   function renderRoster(){
