@@ -10,8 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="profile-achievements.css">
   <script src="config.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="profile-achievements.js" defer></script>
   <script src="world-chronicle.js" defer></script>
   <script src="map-embed.js" defer></script>
 </head>
@@ -177,6 +179,23 @@
         <div id="profile-base-row" hidden><dt>Basis</dt><dd id="profile-base"></dd></div>
       </dl>
       <p class="profile-about" id="profile-about" hidden></p>
+      <section class="profile-extra" aria-labelledby="profile-stats-heading">
+        <div class="profile-extra-head">
+          <h3 id="profile-stats-heading">Spielerstatistiken.</h3>
+          <span class="profile-data-updated" id="profile-data-updated"></span>
+        </div>
+        <div class="profile-stat-grid" id="profile-stats" aria-live="polite">
+          <p class="profile-data-empty">Statistiken werden geladen …</p>
+        </div>
+        <div class="profile-extra-head profile-achievements-head">
+          <h3>Achievements.</h3>
+          <span class="profile-achievement-count" id="profile-achievement-count"></span>
+        </div>
+        <div class="profile-achievement-list" id="profile-achievements" aria-live="polite">
+          <p class="profile-data-empty">Meilensteine werden geladen …</p>
+        </div>
+        <p class="profile-data-note">Erfolge werden erst seit Aktivierung unserer automatischen Welt-Chronik erfasst.</p>
+      </section>
     </div>
   </div>
 </dialog>

@@ -141,3 +141,11 @@ Der Bot aktualisiert eine Discord-Statuskarte, meldet Statuswechsel und erlaubt
 die Eingabe von echten Wartungs-/Ausfallgründen über eine geschützte
 Handy-Verwaltungsseite. Die bestehende Website und Paper-Plugins bleiben
 unverändert.
+
+## Spielerprofile mit Erfolgen und Discord-Meldungen
+
+Die [Einrichtungsanleitung](docs/PLAYER_PROFILES_ACHIEVEMENTS.md) erklärt die
+Spielerstatistiken und ausgewählten echten Achievements in den bestehenden
+Profilkarten sowie die optionalen Discord-Erfolgsmeldungen über euren
+Cloudflare-Statusbot. Keine weitere Paper-JAR notwendig; Live-Änderungen erst
+nach Review und ausdrücklich manueller Cloudflare-Worker-Aktualisierung.
