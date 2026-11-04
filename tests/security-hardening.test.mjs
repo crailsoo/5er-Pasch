@@ -69,7 +69,9 @@ test("static security headers protect all three pages without blocking real asse
   assert.match(headers,/https:\/\/skinrender\.dev/);
   assert.match(headers,/https:\/\/api\.mcstatus\.io/);
   assert.match(headers,/style-src-attr 'unsafe-inline'/);
-  assert.doesNotMatch(headers,/script-src[^\n]*'unsafe-inline'/);
+  const csp=headers.split("\n").find(line=>line.includes("Content-Security-Policy:"));
+  const scriptDirective=csp.match(/(?:^|;\s*)script-src\s+([^;]+)/)?.[1] || "";
+  assert.doesNotMatch(scriptDirective,/'unsafe-inline'/);
 });
 
 test("BlueMap proxy rejects encoded separators and oversized queries; caches static only",async()=>{
