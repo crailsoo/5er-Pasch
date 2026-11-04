@@ -132,3 +132,12 @@ die neuen Serverstatistiken und Ranglisten unter `/stats.html`, eine automatisch
 aktualisierte Welt-Chronik sowie die geprüften Installationsschritte für
 DiscordSRV und Chunky (für Paper 26.3). Alles baut auf dem bestehenden
 `5erPaschPlayerSync`-Plugin und dem schon eingerichteten Cloudflare-KV-Binding auf.
+
+## Discord-Statusbot mit Wartungsgründen
+
+Über den [Discord-Statusbot](docs/DISCORD_STATUS_BOT_SETUP.md) könnt ihr euren
+Minecraft-Server alle fünf Minuten von einem Cloudflare Worker prüfen lassen.
+Der Bot aktualisiert eine Discord-Statuskarte, meldet Statuswechsel und erlaubt
+die Eingabe von echten Wartungs-/Ausfallgründen über eine geschützte
+Handy-Verwaltungsseite. Die bestehende Website und Paper-Plugins bleiben
+unverändert.
