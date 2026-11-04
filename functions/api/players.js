@@ -46,7 +46,16 @@ export async function onRequestGet({ env }) {
       players: (snapshot.players || []).map(p => ({ username: p.username })),
       online: fresh ? (snapshot.online || []) : [],
       updatedAt: snapshot.updatedAt,
-      fresh
+      fresh,
+      statsUpdatedAt: snapshot.statsUpdatedAt || null,
+      stats: (snapshot.stats || []).map(p => ({
+        username: p.username, playTicks: p.playTicks, deaths: p.deaths,
+        mobKills: p.mobKills, walkedCm: p.walkedCm, jumps: p.jumps
+      })),
+      events: (snapshot.events || []).map(e => ({
+        id: e.id, type: e.type, title: e.title, description: e.description,
+        occurredAt: e.occurredAt
+      }))
     });
   } catch (_) {
     return reply({ error: "Spielerliste derzeit nicht verfügbar" }, 503);
@@ -93,9 +102,66 @@ export async function onRequestPost({ request, env }) {
     const validNames = new Set(players.map(p => p.username.toLowerCase()));
     const online = [...new Map(body.online.filter(n => typeof n === "string" &&
       USERNAME.test(n) && validNames.has(n.toLowerCase())).map(n => [n.toLowerCase(), n])).values()];
+    // Optional fields: older v1 plugins continue to work without clearing newer stats/events.
+    const statsById = new Map();
+    for (const p of previous?.stats || []) {
+      if (p && UUID.test(p.uuid) && USERNAME.test(p.username)) statsById.set(p.uuid.toLowerCase(), p);
+    }
+    let statsUpdatedAt = previous?.statsUpdatedAt || null;
+    if (body.stats !== undefined) {
+      if (!Array.isArray(body.stats) || body.stats.length > 500) {
+        return reply({ error: "Ungültige Statistiken" }, 400);
+      }
+      for (const entry of body.stats) {
+        if (!entry || typeof entry.uuid !== "string" || !UUID.test(entry.uuid)
+            || !incoming.has(entry.uuid.toLowerCase())) {
+          return reply({ error: "Ungültige Statistik-UUID" }, 400);
+        }
+        for (const field of ["playTicks", "deaths", "mobKills", "walkedCm", "jumps"]) {
+          if (!Number.isInteger(entry[field]) || entry[field] < 0 || entry[field] > 2147483647) {
+            return reply({ error: "Ungültiger Statistikwert" }, 400);
+          }
+        }
+        const id = entry.uuid.toLowerCase();
+        statsById.set(id, { uuid: id, username: incoming.get(id).username,
+          playTicks: entry.playTicks, deaths: entry.deaths, mobKills: entry.mobKills,
+          walkedCm: entry.walkedCm, jumps: entry.jumps });
+      }
+      statsUpdatedAt = new Date().toISOString();
+    }
+    const stats = [...statsById.values()].slice(-500);
+
+    const eventMap = new Map();
+    for (const entry of previous?.events || []) {
+      if (entry && typeof entry.id === "string") eventMap.set(entry.id, entry);
+    }
+    if (body.events !== undefined) {
+      if (!Array.isArray(body.events) || body.events.length > 100) {
+        return reply({ error: "Ungültige Ereignisliste" }, 400);
+      }
+      for (const e of body.events) {
+        if (!e || typeof e.id !== "string" || !/^[A-Za-z0-9:_-]{1,120}$/.test(e.id)
+            || !["join", "advancement"].includes(e.type)
+            || typeof e.title !== "string" || e.title.length > 120 || !e.title.trim()
+            || typeof e.description !== "string" || e.description.length > 240
+            || typeof e.occurredAt !== "string" || !/^\\d{4}-\\d{2}-\\d{2}T/.test(e.occurredAt)
+            || !Number.isFinite(Date.parse(e.occurredAt))
+            || Date.parse(e.occurredAt) > Date.now() + 600000) {
+          return reply({ error: "Ungültiges Chronik-Ereignis" }, 400);
+        }
+        eventMap.set(e.id, { id: e.id, type: e.type, title: e.title.trim(),
+          description: e.description, occurredAt: e.occurredAt });
+      }
+    }
+    const events = [...eventMap.values()]
+      .sort((a, b) => Date.parse(a.occurredAt) - Date.parse(b.occurredAt))
+      .slice(-60);
     const updatedAt = new Date().toISOString();
-    await env.PLAYER_DATA.put(STORAGE_KEY, JSON.stringify({ players, online, updatedAt }));
-    return reply({ ok: true, total: players.length, online: online.length, updatedAt });
+    await env.PLAYER_DATA.put(STORAGE_KEY, JSON.stringify({
+      players, online, stats, statsUpdatedAt, events, updatedAt
+    }));
+    return reply({ ok: true, total: players.length, online: online.length,
+      stats: stats.length, events: events.length, updatedAt });
   } catch (_) {
     return reply({ error: "Spielerliste konnte nicht gespeichert werden" }, 500);
   }
