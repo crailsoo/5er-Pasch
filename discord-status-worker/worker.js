@@ -51,7 +51,7 @@ function describe(settings, ping) {
   let state, label, reason;
   if (settings.mode === "maintenance") {
     state = "maintenance"; label = "🟡 WARTUNG";
-    reason = settings.maintenanceReason;
+    reason = settings.maintenanceReason || "Wartungsarbeiten, genauere Informationen folgen.";
   } else if (ping.online === true) {
     state = "online"; label = "🟢 ONLINE"; reason = "Der Minecraft-Server ist erreichbar.";
   } else if (ping.online === false) {
@@ -63,7 +63,7 @@ function describe(settings, ping) {
     reason = "Die Statusabfrage ist derzeit gestört. Die Erreichbarkeit ist unklar.";
   }
   return {state, label, reason, online: ping.online, players: ping.players,
-    eta: settings.eta || "", checkedAt: new Date().toISOString(), address: ADDRESS};
+    eta: state==="online" ? "" : (settings.eta || ""), checkedAt: new Date().toISOString(), address: ADDRESS};
 }
 function payload(status) {
   const colors = {online:0x43b86d, offline:0xe15a5a, maintenance:0xf1b955, unknown:0x89929e};
@@ -115,7 +115,7 @@ async function check(env) {
     } catch (_) { /* The persistent status message is already current. */ }
   }
   // A documented offline cause should not persist into an unrelated future outage.
-  if (settings.mode==="auto" && ping.online===true && settings.offlineReason) {
+  if (settings.mode==="auto" && ping.online===true && previous?.state==="offline" && settings.offlineReason) {
     await env.STATUS_STORE.put(SETTINGS_KEY,JSON.stringify({...settings,offlineReason:"",eta:""}));
   }
   return status;
