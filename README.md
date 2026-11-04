@@ -124,3 +124,11 @@ Die bestehende Mitgliederliste bleibt bis dahin sichtbar.
 
 **Plugin-Quellcode:** [server-plugin/](server-plugin/). Der GitHub-Actions-Workflow
 `Build 5er Pasch player sync plugin` erstellt eine installierbare JAR.
+
+## Erweiterte Statistiken, Ranglisten, Discord und Chunky
+
+Die [PebbleHost-Einrichtungsanleitung](docs/STATS_DISCORD_CHUNKY_SETUP.md) enthält
+die neuen Serverstatistiken und Ranglisten unter `/stats.html`, eine automatisch
+aktualisierte Welt-Chronik sowie die geprüften Installationsschritte für
+DiscordSRV und Chunky (für Paper 26.3). Alles baut auf dem bestehenden
+`5erPaschPlayerSync`-Plugin und dem schon eingerichteten Cloudflare-KV-Binding auf.

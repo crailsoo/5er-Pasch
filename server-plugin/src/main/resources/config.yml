@@ -5,3 +5,5 @@ endpoint: "https://5erpasch.pages.dev/api/players"
 token: "SET_SECRET_HERE"
 # Ein regelmaessiger Snapshot alle 5 Minuten (Join/Leave wird schneller gesendet).
 heartbeat-seconds: 300
+# Besondere Fortschritte und erste Spielerbeitritte automatisch auf die Website senden.
+chronicle-enabled: true

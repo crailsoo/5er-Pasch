@@ -1,6 +1,6 @@
 name: 5erPaschPlayerSync
-version: 1.0.0
+version: 1.1.0
 main: de.fivepasch.playersync.PlayerSyncPlugin
 api-version: '1.20'
-description: Synchronisiert bekannte Spieler und ihren Online-Status mit der 5er-Pasch-Website.
+description: Synchronisiert Spieler, Minecraft-Statistiken und Welt-Chronik mit 5er Pasch.
 author: 5er Pasch
