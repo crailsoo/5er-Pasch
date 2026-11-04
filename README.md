@@ -112,3 +112,15 @@ für Production und Preview entsprechend einstellen.
 ## Spielerprofile und Welt-Chronik
 
 Die Charaktere auf der Startseite lassen sich anklicken. Im Profil erscheinen Skin, Name, Rolle und Live-Status. Optional lassen sich in public/config.js pro Spieler joined, base und description eintragen. Unbekannte Angaben werden nicht erfunden. Die Welt-Chronik wird aus SITE_CONFIG.chronicle mit date (YYYY-MM-DD), title und description befüllt. Als erstes bestätigtes Ereignis ist der BlueMap-Start am 3. November 2026 enthalten.
+
+## Automatische Spieler-Synchronisierung
+
+Ein eigenes Paper-Plugin sendet bekannte Spieler und ihren Online-Status an eine
+Cloudflare Pages Function mit KV-Speicher. Der sichere POST-Endpunkt wird erst
+nach Einrichtung von `PLAYER_DATA` und `PLAYER_SYNC_TOKEN` aktiviert.
+Die bestehende Mitgliederliste bleibt bis dahin sichtbar.
+
+**Einrichtungsanleitung:** [docs/PLAYER_SYNC_SETUP.md](docs/PLAYER_SYNC_SETUP.md)
+
+**Plugin-Quellcode:** [server-plugin/](server-plugin/). Der GitHub-Actions-Workflow
+`Build 5er Pasch player sync plugin` erstellt eine installierbare JAR.

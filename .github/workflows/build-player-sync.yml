@@ -1,0 +1,35 @@
+name: Build 5er Pasch player sync plugin
+
+on:
+  push:
+    paths:
+      - 'server-plugin/**'
+      - '.github/workflows/build-player-sync.yml'
+  pull_request:
+    paths:
+      - 'server-plugin/**'
+      - '.github/workflows/build-player-sync.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Build plugin
+        run: mvn --batch-mode --no-transfer-progress -f server-plugin/pom.xml package
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: 5erPaschPlayerSync
+          path: server-plugin/target/5erPaschPlayerSync.jar
+          if-no-files-found: error

@@ -1,0 +1,6 @@
+name: 5erPaschPlayerSync
+version: 1.0.0
+main: de.fivepasch.playersync.PlayerSyncPlugin
+api-version: '1.20'
+description: Synchronisiert bekannte Spieler und ihren Online-Status mit der 5er-Pasch-Website.
+author: 5er Pasch
