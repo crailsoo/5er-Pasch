@@ -20,12 +20,15 @@ const percentile = (values, p) => {
 async function probe(path, method="GET") {
   const started=performance.now();
   try {
-    const res=await fetch(origin+path,{method,signal:AbortSignal.timeout(9000),redirect:"manual",
+    const res=await fetch(origin+path,{method,signal:AbortSignal.timeout(9000),redirect:"follow",
       headers:{"User-Agent":"5er-Pasch-Owner-Security-Audit/1.0"}});
     // Do not buffer response bodies. The page is deliberately fetched to measure TTFB.
     await res.body?.cancel();
     const duration=performance.now()-started;
-    return { status:res.status, ms:duration, headers:res.headers };
+    if (new URL(res.url).origin !== origin)
+      return {status:0,ms:duration,error:"Unexpected cross-origin redirect"};
+    return { status:res.status, ms:duration, headers:res.headers,
+      finalPath:new URL(res.url).pathname, redirected:res.redirected };
   } catch (err) {
     return { status:0, ms:performance.now()-started, error:String(err) };
   }
@@ -34,6 +37,12 @@ async function probe(path, method="GET") {
 const initial=await probe("/");
 console.log("Site:",origin);
 console.log("Initial homepage:",initial.status,"TTFB",Math.round(initial.ms)+"ms");
+for (const path of ["/stats.html","/map.html","/style.css","/app.js"]) {
+  const smoke = await probe(path);
+  console.log("SMOKE",path, "status="+smoke.status, "finalPath="+smoke.finalPath,
+    "redirected="+Boolean(smoke.redirected));
+  if (smoke.status !== 200) {console.error("Static route smoke test failed");process.exit(1);}
+}
 if(initial.status!==200){
   console.error("Live site unavailable from GitHub runner; no load was generated.");
   process.exit(1);
