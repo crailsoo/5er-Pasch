@@ -1,0 +1,22 @@
+name: Test 5er Pasch Discord status bot
+
+on:
+  push:
+    paths:
+      - 'discord-status-worker/**'
+      - '.github/workflows/test-discord-status-bot.yml'
+  pull_request:
+    paths:
+      - 'discord-status-worker/**'
+      - '.github/workflows/test-discord-status-bot.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test Discord monitoring and secure maintenance controls
+        run: node --test discord-status-worker/test.mjs
