@@ -213,21 +213,21 @@ public final class PlayerSyncPlugin extends JavaPlugin implements Listener {
             first = false;
             body.append('"').append(username).append('"');
         }
-        body.append("],\\\"stats\\\":[");
+        body.append("],\"stats\":[");
         first = true;
         for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
             String name = player.getName();
             if (name == null || !USERNAME.matcher(name).matches()) continue;
             if (!first) body.append(',');
             first = false;
-            body.append("{\\\"uuid\\\":\\\"").append(player.getUniqueId())
-                    .append("\\\",\\\"playTicks\\\":").append(stat(player, Statistic.PLAY_ONE_MINUTE))
-                    .append(",\\\"deaths\\\":").append(stat(player, Statistic.DEATHS))
-                    .append(",\\\"mobKills\\\":").append(stat(player, Statistic.MOB_KILLS))
-                    .append(",\\\"walkedCm\\\":").append(stat(player, Statistic.WALK_ONE_CM))
-                    .append(",\\\"jumps\\\":").append(stat(player, Statistic.JUMP)).append('}');
+            body.append("{\"uuid\":\"").append(player.getUniqueId())
+                    .append("\",\"playTicks\":").append(stat(player, Statistic.PLAY_ONE_MINUTE))
+                    .append(",\"deaths\":").append(stat(player, Statistic.DEATHS))
+                    .append(",\"mobKills\":").append(stat(player, Statistic.MOB_KILLS))
+                    .append(",\"walkedCm\":").append(stat(player, Statistic.WALK_ONE_CM))
+                    .append(",\"jumps\":").append(stat(player, Statistic.JUMP)).append('}');
         }
-        body.append("],\\\"events\\\":[");
+        body.append("],\"events\":[");
         first = true;
         List<String> sentEventIds = new ArrayList<>();
         for (Map<String, String> event : pendingEvents) {
@@ -238,8 +238,8 @@ public final class PlayerSyncPlugin extends JavaPlugin implements Listener {
             for (String field : List.of("id", "type", "title", "description", "occurredAt")) {
                 if (!firstField) body.append(',');
                 firstField = false;
-                body.append('\\\"').append(field).append("\\\":\\\"")
-                        .append(jsonEscape(event.get(field))).append('\\\"');
+                body.append('"').append(field).append("\":\"")
+                        .append(jsonEscape(event.get(field))).append('"');
             }
             body.append('}');
             sentEventIds.add(event.get("id"));
@@ -288,8 +288,8 @@ public final class PlayerSyncPlugin extends JavaPlugin implements Listener {
 
     private static String jsonEscape(String value) {
         if (value == null) return "";
-        return value.replace("\\\\", "\\\\\\\\").replace("\\\"", "\\\\\\")
-                .replace("\\n", " ").replace("\\r", " ");
+        return value.replace("\\", "\\\\").replace("\"", "\\\"")
+                .replace("\n", " ").replace("\r", " ");
     }
 
     private static void putIfValid(Map<String, String> target, String uuid, String username) {
