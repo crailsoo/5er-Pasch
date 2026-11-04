@@ -1,0 +1,7 @@
+# Cloudflare Pages URL; eine eigene Domain funktioniert ebenfalls.
+endpoint: "https://5erpasch.pages.dev/api/players"
+# Hier den gleichen geheimen Wert wie Cloudflare PLAYER_SYNC_TOKEN eintragen.
+# Niemals in GitHub oder in den oeffentlichen Website-Dateien speichern.
+token: "SET_SECRET_HERE"
+# Ein regelmaessiger Snapshot alle 5 Minuten (Join/Leave wird schneller gesendet).
+heartbeat-seconds: 300
