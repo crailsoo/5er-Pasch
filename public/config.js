@@ -17,6 +17,7 @@ window.SITE_CONFIG = {
   // Alle Servermitglieder für die Website eintragen, zum Beispiel:
   // { name: "Anzeigename", username: "MinecraftUsername", role: "Spieler" }
   // "username" ist der echte Java-Minecraft-Name für das Skin-Bild.
+  // Weitere Spieler werden nach der Einrichtung automatisch aus /api/players übernommen.
   // Die Live-Liste unter "Gerade online" wird separat aus dem Serverstatus geladen.
   // Bekannte Ereignisse unserer Welt; neue Einträge mit date (JJJJ-MM-TT), title und description.
   chronicle: [
@@ -26,7 +27,9 @@ window.SITE_CONFIG = {
   players: [
     { name: "sams939", username: "sams939", role: "Server Owner" },
     { name: "SALTYPIMP", username: "SALTYPIMP", role: "Spieler" },
-    { name: "Ben_Keynoobie", username: "Ben_Keynoobie", role: "Spieler" }
+    { name: "Ben_Keynoobie", username: "Ben_Keynoobie", role: "Spieler" },
+    { name: "PlayerNr30", username: "PlayerNr30", role: "Spieler" },
+    { name: "Herokicker3028", username: "Herokicker3028", role: "Spieler" }
   ],
   projects: [
     { title: "Die Bergfestung", category: "MEGABASE", status: "bau", progress: 72, builders: ["Spieler 01", "Spieler 02"], description: "Eine Festung direkt im Gebirge, mit mächtigen Mauern, geheimen Gängen und einer Aussicht über das ganze Tal.", image: "", theme: "mountain", demo: true },
