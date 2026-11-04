@@ -5,6 +5,46 @@ const USERNAME = /^[A-Za-z0-9_]{3,16}$/;
 const UUID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 const FRESH_FOR_MS = 12 * 60 * 1000;
 
+// Avoid buffering arbitrarily large chunked requests before validating JSON.
+const MAX_BODY_BYTES = 100000;
+const PUBLIC_CACHE_SECONDS = 15;
+async function readBoundedBody(request) {
+  if (!request.body) return "";
+  const reader = request.body.getReader();
+  const decoder = new TextDecoder("utf-8", { fatal: true });
+  let bytes = 0;
+  let text = "";
+  try {
+    while (true) {
+      const chunk = await reader.read();
+      if (chunk.done) break;
+      bytes += chunk.value.byteLength;
+      if (bytes > MAX_BODY_BYTES) {
+        await reader.cancel().catch(() => {});
+        return null;
+      }
+      text += decoder.decode(chunk.value, { stream: true });
+    }
+    return text + decoder.decode();
+  } finally {
+    reader.releaseLock();
+  }
+}
+
+function publicReply(payload, context) {
+  const response = reply(payload);
+  response.headers.set("cache-control", "public, max-age=0, s-maxage=" + PUBLIC_CACHE_SECONDS);
+  const cache = globalThis.caches?.default;
+  if (cache && context.request) {
+    const key = new Request(new URL("/api/players", context.request.url).toString());
+    const task = cache.put(key, response.clone()).catch(() => {});
+    if (typeof context.waitUntil === "function") context.waitUntil(task);
+    else task.catch(() => {});
+  }
+  return response;
+}
+
+
 function reply(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -35,13 +75,23 @@ async function equalsToken(provided, expected) {
   return difference === 0;
 }
 
-export async function onRequestGet({ env }) {
+export async function onRequestGet(context) {
+  const { env } = context;
   if (!configured(env)) return reply({ enabled: false, players: [], online: [], updatedAt: null, fresh: false });
+  const cache = globalThis.caches?.default;
+  if (cache && context.request) {
+    // Strip query params so ?random= cannot amplify reads or bust the edge cache.
+    try {
+      const key = new Request(new URL("/api/players", context.request.url).toString());
+      const hit = await cache.match(key);
+      if (hit) return hit;
+    } catch (_) { /* If the edge cache is unavailable, KV remains authoritative. */ }
+  }
   try {
     const snapshot = await env.PLAYER_DATA.get(STORAGE_KEY, "json");
-    if (!snapshot) return reply({ enabled: true, players: [], online: [], updatedAt: null, fresh: false });
+    if (!snapshot) return publicReply({ enabled: true, players: [], online: [], updatedAt: null, fresh: false }, context);
     const fresh = Date.now() - Date.parse(snapshot.updatedAt) < FRESH_FOR_MS;
-    return reply({
+    return publicReply({
       enabled: true,
       players: (snapshot.players || []).map(p => ({ username: p.username })),
       online: fresh ? (snapshot.online || []) : [],
@@ -56,7 +106,7 @@ export async function onRequestGet({ env }) {
         id: e.id, type: e.type, title: e.title, description: e.description,
         occurredAt: e.occurredAt
       }))
-    });
+    }, context);
   } catch (_) {
     return reply({ error: "Spielerliste derzeit nicht verfügbar" }, 503);
   }
@@ -73,9 +123,11 @@ export async function onRequestPost({ request, env }) {
     return reply({ error: "JSON erforderlich" }, 415);
   }
   try {
-    if (Number(request.headers.get("content-length")) > 100000) return reply({ error: "Zu große Anfrage" }, 413);
-    const raw = await request.text();
-    if (raw.length > 100000) return reply({ error: "Zu große Anfrage" }, 413);
+    const declaredLength = Number(request.headers.get("content-length"));
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES)
+      return reply({ error: "Zu große Anfrage" }, 413);
+    const raw = await readBoundedBody(request);
+    if (raw === null) return reply({ error: "Zu große Anfrage" }, 413);
     const body = JSON.parse(raw);
     if (!Array.isArray(body.players) || !Array.isArray(body.online) ||
         body.players.length > 500 || body.online.length > 500) {

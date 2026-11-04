@@ -6,6 +6,21 @@ const SERVER = "45.143.198.58";
 const PORT = 8189;
 const ORIGIN = "http://45-143-198-58.sslip.io:8189";
 const PREFIX = "/bluemap/";
+const MAX_QUERY_LENGTH = 512;
+// Only versioned/static map assets are eligible for short edge caching.
+// JSON settings/live state are deliberately never cached.
+const CACHEABLE = /\.(?:png|jpg|jpeg|webp|js|css|woff2?|wasm)$/i;
+const CACHE_SECONDS = 120;
+
+function safePath(path, search) {
+  if (!path || path === "index.html") return search.length <= MAX_QUERY_LENGTH;
+  if (path.length > 2048 || search.length > MAX_QUERY_LENGTH ||
+      path.startsWith("/") || path.includes("\\") || /[\u0000-\u001F\u007F]/.test(path) ||
+      /%(?:00|0a|0d|2e|2f|5c)/i.test(path)) return false;
+  const parts = path.split("/");
+  return !parts.some(part => part === "." || part === ".." || part === "");
+}
+
 
 function concat(a, b) {
   const out = new Uint8Array(a.length + b.length);
@@ -134,7 +149,7 @@ async function viaFetch(path, request) {
     const value = request.headers.get(key);
     if (value) h.set(key, value);
   }
-  const res = await fetch(url, { method: request.method, headers: h, redirect: "manual" });
+  const res = await fetch(url, { method: request.method, headers: h, redirect: "manual", signal: AbortSignal.timeout(12000) });
   const headers = new Headers(res.headers);
   for (const name of ["set-cookie", "x-frame-options", "content-security-policy"]) headers.delete(name);
   return new Response(res.body, { status: res.status, headers });
@@ -149,13 +164,22 @@ function ensureBase(response, path) {
   }).transform(response);
 }
 
-export async function onRequest({ request }) {
+export async function onRequest({ request, waitUntil }) {
   if (!["GET", "HEAD"].includes(request.method)) return new Response("Method not allowed", { status: 405 });
   const incoming = new URL(request.url);
   if (!incoming.pathname.startsWith(PREFIX)) return new Response("Not found", { status: 404 });
   const path = incoming.pathname.slice(PREFIX.length);
-  if (path.startsWith("/") || path.includes("\\") || path.includes("\0") || path.length > 2048) {
+  if (!safePath(path, incoming.search)) {
     return new Response("Invalid path", { status: 400 });
+  }
+  const shouldCache = request.method === "GET" && incoming.search === "" &&
+    CACHEABLE.test(path) && !path.includes("/live/");
+  const cache = globalThis.caches?.default;
+  if (shouldCache && cache) {
+    try {
+      const hit = await cache.match(request);
+      if (hit) return hit;
+    } catch (_) { /* If cache is unavailable, use the normal BlueMap origin. */ }
   }
   try {
     let response;
@@ -175,8 +199,21 @@ export async function onRequest({ request }) {
     if (path.includes("/live/") || path.endsWith(".json")) headers.set("cache-control", "no-store");
     else if (/\.(png|jpg|jpeg|webp|js|css|woff2?|wasm)$/i.test(path)) headers.set("cache-control", "public, max-age=300");
     headers.set("x-content-type-options", "nosniff");
+    headers.set("referrer-policy", "no-referrer");
+    headers.set("x-frame-options", "SAMEORIGIN");
+    headers.delete("server");
+    headers.delete("www-authenticate");
+    if (shouldCache && response.status === 200) {
+      headers.set("cache-control", "public, max-age=0, s-maxage=" + CACHE_SECONDS);
+    }
     response = new Response(request.method === "HEAD" ? null : response.body, { status: response.status, headers });
-    return ensureBase(response, path);
+    response = ensureBase(response, path);
+    if (shouldCache && cache && response.status === 200) {
+      const task = cache.put(request, response.clone()).catch(() => {});
+      if (typeof waitUntil === "function") waitUntil(task);
+      else task.catch(() => {});
+    }
+    return response;
   } catch (error) {
     return new Response("BlueMap momentan nicht über HTTPS erreichbar.", {
       status: 502,
