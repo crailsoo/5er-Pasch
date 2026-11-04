@@ -9,6 +9,7 @@ on:
       - 'public/_headers'
       - 'functions/**'
       - 'tests/security-*.mjs'
+      - 'tests/live-site-check.mjs'
       - '.github/workflows/security-audit.yml'
   workflow_dispatch:
 

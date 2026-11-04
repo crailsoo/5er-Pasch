@@ -47,6 +47,12 @@ if(initial.status!==200){
   console.error("Live site unavailable from GitHub runner; no load was generated.");
   process.exit(1);
 }
+// One low-impact map-data check; do not run tile load tests against the 4 GB Minecraft host.
+const mapData = await probe("/bluemap/settings.json");
+console.log("BLUEMAP SMOKE", "status=" + mapData.status,
+  "content-type=" + (mapData.headers?.get("content-type") || "unknown"),
+  "ttfbMs=" + Math.round(mapData.ms));
+
 const seen=new Set();
 for (const key of [
   "content-security-policy", "strict-transport-security",
